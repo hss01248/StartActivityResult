@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 /**
@@ -14,18 +15,20 @@ import java.util.concurrent.Callable;
  * author:hss
  * desription:
  */
-public class TransFragmentUtil<Frag extends BaseTransFragment,Bean> {
+public class TransFragmentUtil<Frag extends BaseTransFragment, Bean> {
     Bean bean;
     FragmentActivity fragmentActivity;
     String fragmentTag;
-    public TransFragmentUtil(FragmentActivity fragmentActivity,Bean bean,String fragmentTag) {
+
+    public TransFragmentUtil(FragmentActivity fragmentActivity, Bean bean) {
         this.bean = bean;
         this.fragmentActivity = fragmentActivity;
-        this.fragmentTag = fragmentTag;
+        this.fragmentTag = UUID.randomUUID().toString();
+
     }
 
-    public Frag getFragment(){
-       return getTransFragment(fragmentActivity, fragmentTag,
+    public Frag getFragment() {
+        return getTransFragment(fragmentActivity, fragmentTag,
                 new Callable<Frag>() {
                     @Override
                     public Frag call() throws Exception {
@@ -34,8 +37,8 @@ public class TransFragmentUtil<Frag extends BaseTransFragment,Bean> {
                 });
     }
 
-    private   Frag getTransFragment(FragmentActivity fragmentActivity,
-                                                                  String fragmentTag, Callable<Frag> newIntance) {
+    private Frag getTransFragment(FragmentActivity fragmentActivity,
+                                  String fragmentTag, Callable<Frag> newIntance) {
         try {
             FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
             Frag fragment = findFragment(fragmentManager, fragmentTag);
@@ -48,6 +51,7 @@ public class TransFragmentUtil<Frag extends BaseTransFragment,Bean> {
                 fragmentManager.executePendingTransactions();
             }
             fragment.setHostActivity(fragmentActivity);
+            fragment.setBean(bean);
             return fragment;
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +65,7 @@ public class TransFragmentUtil<Frag extends BaseTransFragment,Bean> {
 
     }
 
-    private   Frag findFragment(FragmentManager fragmentManager, String fragmentTag) {
+    private Frag findFragment(FragmentManager fragmentManager, String fragmentTag) {
         Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
         if (fragment == null) {
             return null;
@@ -75,13 +79,13 @@ public class TransFragmentUtil<Frag extends BaseTransFragment,Bean> {
         args.putString(VENDOR_PAY_BUNDLE_KEY, json);
         VendorPayTransFragment fragment = new VendorPayTransFragment();
         fragment.setArguments(args);*/
-        Frag fragment = getNewInstance(this,0);
+        Frag fragment = getNewInstance(this, 0);
         fragment.setBean(bean);
         return fragment;
     }
 
     private <Frag> Frag getNewInstance(Object object, int i) {
-        if(object!=null){
+        if (object != null) {
             try {
                 return ((Class<Frag>) ((ParameterizedType) (object.getClass()
                         .getGenericSuperclass())).getActualTypeArguments()[i])

@@ -9,10 +9,9 @@ import androidx.fragment.app.FragmentActivity;
 
 /**
  *
- * @param <Frag>
  * @param <Bean>
  */
-public  class BaseTransFragment<Frag extends BaseTransFragment,Bean> extends Fragment {
+public  class BaseTransFragment<Bean> extends Fragment {
 
     protected FragmentActivity activity;
 
@@ -31,6 +30,14 @@ public  class BaseTransFragment<Frag extends BaseTransFragment,Bean> extends Fra
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+    }
+
+    public void finish(){
+        try {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commitNow();
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+        }
     }
 
 
