@@ -1,5 +1,6 @@
 package com.hss01248.transfrag;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
@@ -19,11 +21,13 @@ public class TransFragmentUtil<Frag extends BaseTransFragment, Bean> {
     Bean bean;
     FragmentActivity fragmentActivity;
     String fragmentTag;
+    Class<Frag> clazz;
 
-    public TransFragmentUtil(FragmentActivity fragmentActivity, Bean bean) {
+    public TransFragmentUtil(FragmentActivity fragmentActivity,Class<Frag> clazz, Bean bean) {
         this.bean = bean;
         this.fragmentActivity = fragmentActivity;
         this.fragmentTag = UUID.randomUUID().toString();
+        this.clazz = clazz;
 
     }
 
@@ -47,7 +51,7 @@ public class TransFragmentUtil<Frag extends BaseTransFragment, Bean> {
                 fragment = newIntance.call();
                 fragmentManager.beginTransaction()
                         .add(fragment, fragmentTag)
-                        .commitAllowingStateLoss();
+                        .commitNow();
                 fragmentManager.executePendingTransactions();
             }
             fragment.setHostActivity(fragmentActivity);
@@ -79,22 +83,40 @@ public class TransFragmentUtil<Frag extends BaseTransFragment, Bean> {
         args.putString(VENDOR_PAY_BUNDLE_KEY, json);
         VendorPayTransFragment fragment = new VendorPayTransFragment();
         fragment.setArguments(args);*/
-        Frag fragment = getNewInstance(this, 0);
-        fragment.setBean(bean);
+        Frag fragment = null;
+        try {
+            fragment = (Frag) clazz.newInstance();
+            fragment.setBean(bean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return fragment;
     }
 
     private <Frag> Frag getNewInstance(Object object, int i) {
         if (object != null) {
             try {
-                return ((Class<Frag>) ((ParameterizedType) (object.getClass()
+                Type types = object.getClass().getGenericSuperclass();
+
+                Type[] genericType = ((ParameterizedType) types).getActualTypeArguments();
+                for (Type t : genericType) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        System.out.println(t.getTypeName());
+                        System.out.println(t);
+                    }
+                }
+                return ((Class<Frag>) genericType[i]).newInstance();
+
+
+
+
+
+
+                /*return ((Class<Frag>) ((ParameterizedType) (object.getClass()
                         .getGenericSuperclass())).getActualTypeArguments()[i])
-                        .newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (ClassCastException e) {
+                        .newInstance();*/
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

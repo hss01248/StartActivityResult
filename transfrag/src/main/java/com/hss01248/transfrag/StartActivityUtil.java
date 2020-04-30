@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import io.reactivex.functions.Consumer;
 import rx_activity_result2.Result;
@@ -26,10 +27,15 @@ public class StartActivityUtil {
 
 
     static boolean debugable;
+    static boolean hasInit;
 
-    public static void init(Application application) {
+    private static void init(Application application) {
+         if(hasInit){
+             return;
+         }
         RxActivityResult.register(application);
         debugable = isAppDebugable(application);
+         hasInit = true;
     }
 
     private static boolean isAppDebugable(Application application) {
@@ -41,6 +47,46 @@ public class StartActivityUtil {
         }
     }
 
+    @SuppressLint("CheckResult")
+    public static void goOutAppForResult(@NonNull Activity activity, @NonNull  Intent intent,
+                                         @NonNull final OutActivityResultListener listener){
+         /*init(activity.getApplication());
+        RxActivityResult.on(activity)
+                .startIntent(intent)
+                .subscribe(new Consumer<Result<Activity>>() {
+                    @Override
+                    public void accept(Result<Activity> t) throws Exception {
+                        if (debugable) {
+                            Log.i("onActivityResult", "req:" + t.requestCode() + ",result:" + t.resultCode() + ",data:" + t.data());
+                        }
+                        listener.onActivityResult(t.requestCode(),
+                                t.resultCode(), t.data());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if (debugable) {
+                            throwable.printStackTrace();
+                        }
+                        listener.onActivityNotFound(throwable);
+
+                    }
+                });*/
+
+        new TransFragmentUtil<DefaultTransFragment,Intent>((FragmentActivity) activity,DefaultTransFragment.class,intent).getFragment()
+                .goOutApp(new OutActivityResultListener() {
+                    @Override
+                    protected void onResultOther(Intent data, int resultCode) {
+
+                    }
+
+                    @Override
+                    protected void onResultOK(Intent data) {
+
+                    }
+                });
+    }
+
     /**
      * @param activity
      * @param targetClazz
@@ -49,11 +95,12 @@ public class StartActivityUtil {
      * @param listener
      */
     @SuppressLint("CheckResult")
-    public static void startActivity(@NonNull final Activity activity,
-                                     @NonNull Class<? extends Activity> targetClazz,
+    public static <T extends Activity> void startActivity(@NonNull final Activity activity,
+                                     @NonNull Class<T> targetClazz,
                                      @Nullable Intent intent,
                                      boolean needResult,
-                                     @NonNull final TheActivityListener listener) {
+                                     @NonNull final TheActivityListener<T> listener) {
+        init(activity.getApplication());
         registerCallback(activity.getApplication(), targetClazz, listener);
         if (intent == null) {
             intent = new Intent(activity, targetClazz);
@@ -90,8 +137,8 @@ public class StartActivityUtil {
 
     }
 
-    private static void registerCallback(final Application application, final Class<? extends Activity> targetClazz,
-                                         final TheActivityListener listener) {
+    private static <T extends Activity> void registerCallback(final Application application, final Class<T> targetClazz,
+                                         final TheActivityListener<T> listener) {
 
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             boolean hasonActivityCreated;
@@ -104,7 +151,7 @@ public class StartActivityUtil {
                     if (!hasonActivityCreated) {
                         hasonActivityCreated = true;
                         if (debugable) Log.i("callback", "onActivityCreated");
-                        listener.onActivityCreated(activity, savedInstanceState);
+                        listener.onActivityCreated((T) activity, savedInstanceState);
                     } else {
                         if (debugable) Log.w("has", "hasonActivityCreated");
                     }
@@ -117,7 +164,7 @@ public class StartActivityUtil {
                     if (!hasonActivityStarted) {
                         hasonActivityStarted = true;
                         if (debugable) Log.i("callback", "onActivityStarted");
-                        listener.onActivityStarted(activity);
+                        listener.onActivityStarted((T) activity);
                     } else {
                         if (debugable) Log.w("has", "hasonActivityStarted");
                     }
@@ -131,7 +178,7 @@ public class StartActivityUtil {
                         hasonActivityResumed = true;
                         if (debugable) Log.i("callback", "onActivityResumed");
                         application.unregisterActivityLifecycleCallbacks(this);
-                        listener.onActivityResumed(activity);
+                        listener.onActivityResumed((T) activity);
                     } else {
                         if (debugable) Log.w("has", "hasonActivityResumed");
                     }

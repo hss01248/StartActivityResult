@@ -22,6 +22,6 @@ public class ActivityDemo2 extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("data",data+"");
+        Log.d("onacreate-data",data+"");
     }
 }

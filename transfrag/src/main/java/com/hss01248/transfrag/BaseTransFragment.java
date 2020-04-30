@@ -1,6 +1,8 @@
 package com.hss01248.transfrag;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 
 import androidx.annotation.Nullable;
@@ -21,6 +23,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
     }
 
     protected Bean bean;
+    private boolean hasResume;
 
     public void setHostActivity(FragmentActivity activity) {
         this.activity = activity;
@@ -30,6 +33,34 @@ public  class BaseTransFragment<Bean> extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        if(StartActivityUtil.debugable){
+            Log.d("frag","onCreate:"+this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        if(StartActivityUtil.debugable){
+            Log.d("frag","onresume:"+this);
+        }
+        super.onResume();
+        if(!hasResume){
+            hasResume = true;
+        }else {
+            onNotFirstResume();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(StartActivityUtil.debugable){
+            Log.d("frag","onActivityResult:"+this);
+        }
+    }
+
+    protected void onNotFirstResume(){
+
     }
 
     public void finish(){

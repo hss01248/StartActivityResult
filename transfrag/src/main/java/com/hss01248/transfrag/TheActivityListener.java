@@ -14,52 +14,50 @@ import androidx.annotation.Nullable;
  * author:hss
  * desription:
  */
-public  class TheActivityListener {
+public  class TheActivityListener<T extends Activity> {
 
 
 
-    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-
-    }
-
-
-    public void onActivityStarted(@NonNull Activity activity) {
+    protected void onActivityCreated(@NonNull T activity, @Nullable Bundle savedInstanceState) {
 
     }
 
 
-    public void onActivityResumed(@NonNull Activity activity) {
+    protected void onActivityStarted(@NonNull T activity) {
 
     }
 
 
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResumed(@NonNull T activity) {
+
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode == Activity.RESULT_OK){
             onResultOK(data);
         }else if(resultCode == Activity.RESULT_CANCELED){
             onResultCancel(data);
         }else {
-            onResultOther(data);
+            onResultOther(data,resultCode);
         }
     }
 
-    public void onResultOther(Intent data) {
+    protected void onResultOther(Intent data, int resultCode) {
 
     }
 
-    public void onResultCancel(Intent data) {
+    protected void onResultCancel(Intent data) {
 
     }
 
-    public void onResultOK(Intent data) {
+    protected void onResultOK(Intent data) {
 
     }
 
 
-    public void onActivityNotFound(Throwable e) {
-        if(e != null){
-            e.printStackTrace();
-        }
+    protected void onActivityNotFound(Throwable e) {
+
 
     }
 }
