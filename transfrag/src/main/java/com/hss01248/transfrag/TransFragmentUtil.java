@@ -51,8 +51,8 @@ public class TransFragmentUtil<Frag extends BaseTransFragment, Bean> {
                 fragment = newIntance.call();
                 fragmentManager.beginTransaction()
                         .add(fragment, fragmentTag)
-                        .commitNow();
-                fragmentManager.executePendingTransactions();
+                        .commitNowAllowingStateLoss();
+                //fragmentManager.executePendingTransactions();
             }
             fragment.setHostActivity(fragmentActivity);
             fragment.setBean(bean);

@@ -50,6 +50,7 @@ public class StartActivityUtil {
     @SuppressLint("CheckResult")
     public static void goOutAppForResult(@NonNull Activity activity, @NonNull  Intent intent,
                                          @NonNull final OutActivityResultListener listener){
+        init(activity.getApplication());
          /*init(activity.getApplication());
         RxActivityResult.on(activity)
                 .startIntent(intent)
@@ -73,18 +74,35 @@ public class StartActivityUtil {
                     }
                 });*/
 
-        new TransFragmentUtil<DefaultTransFragment,Intent>((FragmentActivity) activity,DefaultTransFragment.class,intent).getFragment()
-                .goOutApp(new OutActivityResultListener() {
-                    @Override
-                    protected void onResultOther(Intent data, int resultCode) {
+        new TransFragmentUtil<GoOutOfAppForResultFragment,Intent>((FragmentActivity) activity, GoOutOfAppForResultFragment.class,intent).getFragment()
+                .goOutApp(listener);
+        /*FragmentActivity fragmentActivity =   (FragmentActivity) activity;
+        try {
+            FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+            GoOutOfAppForResultFragment fragment =  new GoOutOfAppForResultFragment();
+            fragment.setHostActivity(fragmentActivity);
+            fragment.setBean(intent);
+                fragmentManager.beginTransaction()
+                        .add(android.R.id.content,fragment, "58255")
+                        .commitNowAllowingStateLoss();
+                //fragmentManager.executePendingTransactions();
 
-                    }
 
-                    @Override
-                    protected void onResultOK(Intent data) {
+            fragment.goOutApp(new OutActivityResultListener() {
+                @Override
+                protected void onResultOther(Intent data, int resultCode) {
 
-                    }
-                });
+                }
+
+                @Override
+                protected void onResultOK(Intent data) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
     }
 
     /**

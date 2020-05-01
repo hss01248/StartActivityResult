@@ -23,7 +23,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
     }
 
     protected Bean bean;
-    private boolean hasResume;
+     boolean firstResume = true;
 
     public void setHostActivity(FragmentActivity activity) {
         this.activity = activity;
@@ -39,16 +39,44 @@ public  class BaseTransFragment<Bean> extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if(StartActivityUtil.debugable){
+            Log.d("frag","onStart:"+this);
+        }
+
+    }
+
+    @Override
     public void onResume() {
         if(StartActivityUtil.debugable){
             Log.d("frag","onresume:"+this);
         }
         super.onResume();
-        if(!hasResume){
-            hasResume = true;
-        }else {
-            onNotFirstResume();
+        if(firstResume){
+            onFirstResume();
+            firstResume = false;
         }
+    }
+
+
+    protected void onFirstResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(StartActivityUtil.debugable)
+        Log.d("frag","onPause:"+this);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(StartActivityUtil.debugable)
+        Log.d("frag","onStop:"+this);
     }
 
     @Override
@@ -59,13 +87,18 @@ public  class BaseTransFragment<Bean> extends Fragment {
         }
     }
 
-    protected void onNotFirstResume(){
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(StartActivityUtil.debugable){
+            Log.d("frag","onDestroy:"+this);
+        }
     }
+
 
     public void finish(){
         try {
-            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commitNow();
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
         }catch (Throwable throwable){
             throwable.printStackTrace();
         }

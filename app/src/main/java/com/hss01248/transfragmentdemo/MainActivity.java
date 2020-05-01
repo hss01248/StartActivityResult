@@ -41,14 +41,16 @@ public class MainActivity extends AppCompatActivity {
     private void goNotification() {
        Intent intent =  getNotificationIntent();
        StartActivityUtil.goOutAppForResult(this, intent, new OutActivityResultListener() {
+
+
            @Override
-           protected void onResultOther(Intent data, int resultCode) {
-             boolean hasPermission =   NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();
-             Toast.makeText(MainActivity.this,"通知栏权限:"+hasPermission,Toast.LENGTH_SHORT).show();
+           public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+               boolean hasPermission =   NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();
+               Toast.makeText(MainActivity.this,"通知栏权限:"+hasPermission,Toast.LENGTH_SHORT).show();
            }
 
            @Override
-           protected void onResultOK(Intent data) {
+           public void onActivityNotFound(Throwable e) {
 
            }
        });
