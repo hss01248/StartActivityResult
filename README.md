@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/hss01248/StartActivityResult.svg)](https://jitpack.io/#hss01248/StartActivityResult)
 # TransparentFragment
 use a transparent fragment to handle callbacks of activity in listener style api
 
@@ -20,8 +21,8 @@ And add next dependencies in the build.gradle of the module:
 
 ```
 dependencies {
-   implementation 'com.github.hss01248.StartActivityResult:activityresult:1.0.0'
-   implementation   'com.github.hss01248.StartActivityResult:transfrag:1.0.0'
+   implementation 'com.github.hss01248.StartActivityResult:activityresult:1.0.1'//依赖这一个即可
+   implementation   'com.github.hss01248.StartActivityResult:transfrag:1.0.1'
    
 }
 ```
