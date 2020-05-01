@@ -18,7 +18,7 @@ import java.util.Random;
  class GoOutOfAppForResultFragment extends BaseTransFragment<Intent> {
 
     int requestCode;
-    OutActivityResultListener listener;
+    ActivityResultListener listener;
     boolean startWaitingResult;
     boolean consumed;
 
@@ -26,7 +26,7 @@ import java.util.Random;
         super(activity, intent);
     }
 
-    public void goOutApp(OutActivityResultListener listener){
+    public void goOutApp(ActivityResultListener listener){
         requestCode = new Random().nextInt(8799);
         this.listener = listener;
         try {

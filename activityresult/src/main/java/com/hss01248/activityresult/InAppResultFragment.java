@@ -15,12 +15,12 @@ import java.util.Random;
  * author:hss
  * desription:
  */
- class InAppResultFragment extends BaseTransFragment<Intent> {
+ public class InAppResultFragment extends BaseTransFragment<Intent> {
     public InAppResultFragment(FragmentActivity activity, Intent intent) {
         super(activity, intent);
     }
-    TheActivityListener listener;
-    public void startActivityForResult(TheActivityListener listener){
+    ActivityResultListener listener;
+    public void startActivityForResult(ActivityResultListener listener){
         try {
             this.listener = listener;
             startActivityForResult(bean,new Random().nextInt(589));

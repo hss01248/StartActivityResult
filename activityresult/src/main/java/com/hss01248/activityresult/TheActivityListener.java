@@ -1,10 +1,8 @@
 package com.hss01248.activityresult;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +12,7 @@ import androidx.annotation.Nullable;
  * author:hss
  * desription:
  */
-public  class TheActivityListener<T extends Activity> implements OutActivityResultListener{
+public  class TheActivityListener<T extends Activity> implements ActivityResultListener {
 
 
 

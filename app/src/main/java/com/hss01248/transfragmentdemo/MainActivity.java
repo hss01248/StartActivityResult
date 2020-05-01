@@ -13,7 +13,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
-import com.hss01248.activityresult.OutActivityResultListener;
+import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
 import com.hss01248.activityresult.TheActivityListener;
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goNotification() {
        Intent intent =  getNotificationIntent();
-       StartActivityUtil.goOutAppForResult(this, intent, new OutActivityResultListener() {
+       StartActivityUtil.goOutAppForResult(this, intent, new ActivityResultListener() {
 
 
            @Override

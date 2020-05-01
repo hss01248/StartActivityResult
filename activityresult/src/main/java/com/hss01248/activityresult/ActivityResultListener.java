@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
  * author:hss
  * desription:
  */
-public interface OutActivityResultListener {
+public interface ActivityResultListener {
 
     /**
      * 在里面自己处理

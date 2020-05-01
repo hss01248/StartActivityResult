@@ -46,7 +46,7 @@ public class StartActivityUtil {
 
     @SuppressLint("CheckResult")
     public static void goOutAppForResult(@NonNull Activity activity, @NonNull  Intent intent,
-                                         @NonNull final OutActivityResultListener listener){
+                                         @NonNull final ActivityResultListener listener){
         init(activity.getApplication());
         new GoOutOfAppForResultFragment((FragmentActivity) activity,intent).goOutApp(listener);
     }
@@ -60,12 +60,18 @@ public class StartActivityUtil {
      */
     @SuppressLint("CheckResult")
     public static <T extends Activity> void startActivity(@NonNull final Activity activity,
-                                     @NonNull Class<T> targetClazz,
+                                     @Nullable Class<T> targetClazz,
                                      @Nullable Intent intent,
                                      boolean needResult,
                                      @NonNull final TheActivityListener<T> listener) {
         init(activity.getApplication());
-        registerCallback(activity.getApplication(), targetClazz, listener);
+        if(targetClazz == null && intent == null){
+            listener.onActivityNotFound(new Throwable("targetClazz and intent can not be  null at same time"));
+            return;
+        }
+        if(targetClazz != null){
+            registerCallback(activity.getApplication(), targetClazz, listener);
+        }
         if (intent == null) {
             intent = new Intent(activity, targetClazz);
         }
