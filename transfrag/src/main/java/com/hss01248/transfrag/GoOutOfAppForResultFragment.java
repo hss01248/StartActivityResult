@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.Random;
 
@@ -18,6 +19,11 @@ public class GoOutOfAppForResultFragment extends BaseTransFragment<Intent> {
     OutActivityResultListener listener;
     boolean startWaitingResult;
     boolean consumed;
+
+    public GoOutOfAppForResultFragment(FragmentActivity activity, Intent intent) {
+        super(activity, intent);
+    }
+
     public void goOutApp(OutActivityResultListener listener){
         requestCode = new Random().nextInt(8799);
         this.listener = listener;

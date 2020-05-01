@@ -31,6 +31,8 @@ public class TransFragmentUtil<Frag extends BaseTransFragment, Bean> {
 
     }
 
+    //public static Frag <Frag extends BaseTransFragment, Bean> buildFrag(FragmentActivity fragmentActivityClass<Frag> clazz, Bean bean)
+
     public Frag getFragment() {
         return getTransFragment(fragmentActivity, fragmentTag,
                 new Callable<Frag>() {

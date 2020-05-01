@@ -1,5 +1,7 @@
 package com.hss01248.transfragmentdemo;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.hss01248.transfrag.BaseTransFragment;
 
 /**
@@ -8,6 +10,10 @@ import com.hss01248.transfrag.BaseTransFragment;
  * desription:
  */
 public class OrderFragment extends BaseTransFragment {
+
+    public OrderFragment(FragmentActivity activity, Object o) {
+        super(activity, o);
+    }
 
     public void startOrder(){
 

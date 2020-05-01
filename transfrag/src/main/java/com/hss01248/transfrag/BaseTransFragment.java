@@ -8,6 +8,9 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+
+import java.util.UUID;
 
 /**
  *
@@ -25,8 +28,26 @@ public  class BaseTransFragment<Bean> extends Fragment {
     protected Bean bean;
      boolean firstResume = true;
 
+
     public void setHostActivity(FragmentActivity activity) {
         this.activity = activity;
+    }
+
+    public BaseTransFragment(FragmentActivity activity, Bean bean) {
+        this.activity = activity;
+        this.bean = bean;
+        startFragmentTransaction();
+    }
+
+    private void startFragmentTransaction() {
+        try {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(this, UUID.randomUUID().toString())
+                        .commitNowAllowingStateLoss();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
