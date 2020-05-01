@@ -20,7 +20,8 @@ And add next dependencies in the build.gradle of the module:
 
 ```
 dependencies {
-    implementation 'com.github.hss01248:transfragment'
+   implementation 'com.github.hss01248.StartActivityResult:activityresult:1.0.0'
+   implementation   'com.github.hss01248.StartActivityResult:transfrag:1.0.0'
    
 }
 ```
@@ -37,9 +38,15 @@ just like:
 new GoOutOfAppForResultFragment(fragment,info).goOutApp(listener);
 ```
 
+[基于透明fragment的长流程封装技巧](https://juejin.im/post/5c2f0a0951882524661d1252)
 
 
-# startActivity and getCallback
+
+# startActivity and getResult
+
+start a activity and set data in it's onCreate listener, rather then send data by parcelable
+
+and get result in listener, not in activity's onActivityResult callback
 
 ```
 StartActivityUtil.startActivity(this, ActivityDemo2.class, null,true,
@@ -59,9 +66,9 @@ StartActivityUtil.startActivity(this, ActivityDemo2.class, null,true,
         });
 ```
 
-# 
 
-### start a intent to open a third party app and get result in callback:
+
+### start a intent to open a third party app and recheck result in callback:
 
 ```
 StartActivityUtil.goOutAppForResult(this, intent, new OutActivityResultListener() {
