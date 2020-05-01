@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
                         super.onActivityResult(requestCode, resultCode, data);
                         Toast.makeText(MainActivity.this, "activity onActivityResult 回调", Toast.LENGTH_LONG).show();
                     }
