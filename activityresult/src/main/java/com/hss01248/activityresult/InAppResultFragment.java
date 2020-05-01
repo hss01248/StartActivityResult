@@ -1,10 +1,12 @@
-package com.hss01248.transfrag;
+package com.hss01248.activityresult;
 
 import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+
+import com.hss01248.transfrag.BaseTransFragment;
 
 import java.util.Random;
 
@@ -13,7 +15,7 @@ import java.util.Random;
  * author:hss
  * desription:
  */
-public class InAppResultFragment extends BaseTransFragment<Intent> {
+ class InAppResultFragment extends BaseTransFragment<Intent> {
     public InAppResultFragment(FragmentActivity activity, Intent intent) {
         super(activity, intent);
     }

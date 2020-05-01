@@ -1,4 +1,4 @@
-package com.hss01248.transfrag;
+package com.hss01248.activityresult;
 
 import android.app.Activity;
 import android.content.Intent;

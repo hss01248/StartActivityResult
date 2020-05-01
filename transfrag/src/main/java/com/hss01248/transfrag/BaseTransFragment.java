@@ -1,6 +1,8 @@
 package com.hss01248.transfrag;
 
+import android.app.Application;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -19,25 +21,16 @@ import java.util.UUID;
 public  class BaseTransFragment<Bean> extends Fragment {
 
     protected FragmentActivity activity;
-
-
-    public void setBean(Bean bean) {
-        this.bean = bean;
-    }
-
     protected Bean bean;
-     boolean firstResume = true;
-
-
-    public void setHostActivity(FragmentActivity activity) {
-        this.activity = activity;
-    }
+    boolean firstResume = true;
+    public static boolean debugable = true;
 
     public BaseTransFragment(FragmentActivity activity, Bean bean) {
         this.activity = activity;
         this.bean = bean;
         startFragmentTransaction();
     }
+
 
     private void startFragmentTransaction() {
         try {
@@ -54,7 +47,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if(StartActivityUtil.debugable){
+        if(debugable){
             Log.d("frag","onCreate:"+this);
         }
     }
@@ -62,7 +55,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(StartActivityUtil.debugable){
+        if(debugable){
             Log.d("frag","onStart:"+this);
         }
 
@@ -70,7 +63,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
 
     @Override
     public void onResume() {
-        if(StartActivityUtil.debugable){
+        if(debugable){
             Log.d("frag","onresume:"+this);
         }
         super.onResume();
@@ -88,7 +81,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(StartActivityUtil.debugable)
+        if(debugable)
         Log.d("frag","onPause:"+this);
 
     }
@@ -96,14 +89,14 @@ public  class BaseTransFragment<Bean> extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(StartActivityUtil.debugable)
+        if(debugable)
         Log.d("frag","onStop:"+this);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(StartActivityUtil.debugable){
+        if(debugable){
             Log.d("frag","onActivityResult:"+this);
         }
     }
@@ -111,7 +104,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(StartActivityUtil.debugable){
+        if(debugable){
             Log.d("frag","onDestroy:"+this);
         }
     }

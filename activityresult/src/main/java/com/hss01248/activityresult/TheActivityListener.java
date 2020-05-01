@@ -1,4 +1,4 @@
-package com.hss01248.transfrag;
+package com.hss01248.activityresult;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
  * author:hss
  * desription:
  */
-public  class TheActivityListener<T extends Activity> {
+public  class TheActivityListener<T extends Activity> implements OutActivityResultListener{
 
 
 
@@ -33,7 +33,8 @@ public  class TheActivityListener<T extends Activity> {
     }
 
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(resultCode == Activity.RESULT_OK){
             onResultOK(data);
         }else if(resultCode == Activity.RESULT_CANCELED){
@@ -56,7 +57,8 @@ public  class TheActivityListener<T extends Activity> {
     }
 
 
-    protected void onActivityNotFound(Throwable e) {
+    @Override
+    public void onActivityNotFound(Throwable e) {
 
 
     }

@@ -1,4 +1,4 @@
-package com.hss01248.transfrag;
+package com.hss01248.activityresult;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -82,30 +82,9 @@ public class StartActivityUtil {
         }
         if(activity instanceof FragmentActivity){
             new InAppResultFragment((FragmentActivity) activity,intent).startActivityForResult(listener);
+        }else {
+            activity.startActivityForResult(intent,898);
         }
-
-       /* RxActivityResult.on(activity)
-                .startIntent(intent)
-                .subscribe(new Consumer<Result<Activity>>() {
-                    @Override
-                    public void accept(Result<Activity> t) throws Exception {
-                        if (debugable) {
-                            Log.i("onActivityResult", "req:" + t.requestCode() + ",result:" + t.resultCode() + ",data:" + t.data());
-                        }
-                        listener.onActivityResult(t.requestCode(),
-                                t.resultCode(), t.data());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if (debugable) {
-                            throwable.printStackTrace();
-                        }
-                        listener.onActivityNotFound(throwable);
-
-                    }
-                });*/
-
     }
 
     private static <T extends Activity> void registerCallback(final Application application, final Class<T> targetClazz,

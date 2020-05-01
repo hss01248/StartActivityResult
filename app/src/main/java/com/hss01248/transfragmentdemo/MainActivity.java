@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -14,9 +13,10 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
-import com.hss01248.transfrag.OutActivityResultListener;
-import com.hss01248.transfrag.TheActivityListener;
-import com.hss01248.transfrag.StartActivityUtil;
+import com.hss01248.activityresult.OutActivityResultListener;
+import com.hss01248.activityresult.StartActivityUtil;
+import com.hss01248.activityresult.TheActivityListener;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void allCallback() {
-        //new TransFragmentUtil<AllListenerFragment,String>(this,"").getFragment();
         StartActivityUtil.startActivity(this, ActivityDemo2.class, null,true,
                 new TheActivityListener<ActivityDemo2>() {
                     @Override
                     public void onActivityCreated(@NonNull ActivityDemo2 activity, @Nullable Bundle savedInstanceState) {
+                       //可以在这里传递数据
                         activity.setData(666);
                         Toast.makeText(activity, "activity oncreate 回调", Toast.LENGTH_LONG).show();
                     }
