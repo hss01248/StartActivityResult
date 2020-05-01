@@ -12,9 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
-import io.reactivex.functions.Consumer;
-import rx_activity_result2.Result;
-import rx_activity_result2.RxActivityResult;
+
 
 /**
  * time:2020/4/30
@@ -33,7 +31,6 @@ public class StartActivityUtil {
          if(hasInit){
              return;
          }
-        RxActivityResult.register(application);
         debugable = isAppDebugable(application);
          hasInit = true;
     }
@@ -76,11 +73,18 @@ public class StartActivityUtil {
             try {
                 activity.startActivity(intent);
             } catch (Throwable throwable) {
+                if (debugable) {
+                    throwable.printStackTrace();
+                }
                 listener.onActivityNotFound(throwable);
             }
             return;
         }
-        RxActivityResult.on(activity)
+        if(activity instanceof FragmentActivity){
+            new InAppResultFragment((FragmentActivity) activity,intent).startActivityForResult(listener);
+        }
+
+       /* RxActivityResult.on(activity)
                 .startIntent(intent)
                 .subscribe(new Consumer<Result<Activity>>() {
                     @Override
@@ -100,7 +104,7 @@ public class StartActivityUtil {
                         listener.onActivityNotFound(throwable);
 
                     }
-                });
+                });*/
 
     }
 

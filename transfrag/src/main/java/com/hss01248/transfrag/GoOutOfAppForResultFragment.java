@@ -31,6 +31,7 @@ public class GoOutOfAppForResultFragment extends BaseTransFragment<Intent> {
             startActivityForResult(bean,requestCode);
         }catch (Throwable throwable){
             listener.onActivityNotFound(throwable);
+            finish();
         }
     }
 

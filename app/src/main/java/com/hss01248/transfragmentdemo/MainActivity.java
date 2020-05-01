@@ -95,9 +95,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onActivityCreated(@NonNull ActivityDemo2 activity, @Nullable Bundle savedInstanceState) {
                         activity.setData(666);
-                        Toast.makeText(activity, "activity oncreate 回调", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "activity oncreate 回调", Toast.LENGTH_LONG).show();
                     }
 
+                    @Override
+                    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                        super.onActivityResult(requestCode, resultCode, data);
+                        Toast.makeText(MainActivity.this, "activity onActivityResult 回调", Toast.LENGTH_LONG).show();
+                    }
                 });
     }
 }
