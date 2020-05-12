@@ -15,7 +15,7 @@ import java.util.Random;
  * author:hss
  * desription:
  */
- class GoOutOfAppForResultFragment extends BaseTransFragment<Intent> {
+ public class GoOutOfAppForResultFragment extends BaseTransFragment<Intent> {
 
     int requestCode;
     ActivityResultListener listener;
