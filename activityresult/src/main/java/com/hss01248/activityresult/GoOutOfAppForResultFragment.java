@@ -43,25 +43,23 @@ import java.util.Random;
         startWaitingResult = true;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if(startWaitingResult){
-            onStartOfResultBack();
-            startWaitingResult = false;
-        }
-    }
 
-
+    /**
+     * 如果真有,那么比onStart()先执行
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(startWaitingResult){
             consumed = true;
-            listener.onActivityResult(requestCode,resultCode,data);
             if (StartActivityUtil.debugable) {
                 Log.i("onActivityResult", "req:" + requestCode + ",result:" + resultCode + ",data:" + data);
             }
+            onStartOfResultBack(requestCode,resultCode,data);
+
             //不会在回来时回调,而是一跳出去就回调,resultcode是cancel,所以这个方法不能用
         }
         //consumed = true;
@@ -70,8 +68,17 @@ import java.util.Random;
 
     }
 
-    protected void onStartOfResultBack() {
-        listener.onActivityResult(requestCode,66,null);
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(startWaitingResult && !consumed){
+            onStartOfResultBack(requestCode,66,null);
+            startWaitingResult = false;
+        }
+    }
+
+    protected void onStartOfResultBack(int requestCode, int resultCode, @Nullable Intent data) {
+        listener.onActivityResult(requestCode,resultCode,data);
         if (StartActivityUtil.debugable) {
             Log.i("onActivityResult2", "req:" + requestCode + ",result:onStartOfResultBack,data:null" );
         }
