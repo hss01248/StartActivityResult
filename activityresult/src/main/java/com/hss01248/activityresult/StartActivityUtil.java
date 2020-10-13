@@ -6,11 +6,13 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
+
 
 
 
@@ -45,7 +47,7 @@ public class StartActivityUtil {
     }
 
     @SuppressLint("CheckResult")
-    public static void goOutAppForResult(@NonNull Activity activity, @NonNull  Intent intent,
+    public static void goOutAppForResult(@NonNull AppCompatActivity activity, @NonNull  Intent intent,
                                          @NonNull final ActivityResultListener listener){
         init(activity.getApplication());
         new GoOutOfAppForResultFragment((FragmentActivity) activity,intent).goOutApp(listener);
@@ -59,11 +61,11 @@ public class StartActivityUtil {
      * @param listener
      */
     @SuppressLint("CheckResult")
-    public static <T extends Activity> void startActivity(@NonNull final Activity activity,
-                                     @Nullable Class<T> targetClazz,
-                                     @Nullable Intent intent,
-                                     boolean needResult,
-                                     @NonNull final TheActivityListener<T> listener) {
+    public static <T extends AppCompatActivity> void startActivity(@NonNull final AppCompatActivity activity,
+                                                                   @Nullable Class<T> targetClazz,
+                                                                   @Nullable Intent intent,
+                                                                   boolean needResult,
+                                                                   @NonNull final TheActivityListener<T> listener) {
         init(activity.getApplication());
         if(targetClazz == null && intent == null){
             listener.onActivityNotFound(new Throwable("targetClazz and intent can not be  null at same time"));
@@ -93,8 +95,8 @@ public class StartActivityUtil {
         }
     }
 
-    private static <T extends Activity> void registerCallback(final Application application, final Class<T> targetClazz,
-                                         final TheActivityListener<T> listener) {
+    private static <T extends AppCompatActivity> void registerCallback(final Application application, final Class<T> targetClazz,
+                                                                       final TheActivityListener<T> listener) {
 
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             boolean hasonActivityCreated;

@@ -1,6 +1,8 @@
 package com.hss01248.transfragmentdemo;
 
-import androidx.fragment.app.FragmentActivity;
+
+
+import android.support.v4.app.FragmentActivity;
 
 import com.hss01248.transfrag.BaseTransFragment;
 

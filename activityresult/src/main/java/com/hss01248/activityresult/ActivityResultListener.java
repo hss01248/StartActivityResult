@@ -2,9 +2,10 @@ package com.hss01248.activityresult;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+
 
 /**
  * time:2020/4/30

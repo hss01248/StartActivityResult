@@ -1,10 +1,10 @@
 package com.hss01248.activityresult;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.hss01248.transfrag.BaseTransFragment;
 
