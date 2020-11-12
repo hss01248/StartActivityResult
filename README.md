@@ -2,7 +2,7 @@
 # TransparentFragment
 use a transparent fragment to handle callbacks of activity in listener style api
 
-
+![image-20201112195140088](https://gitee.com/hss012489/picbed/raw/master/picgo/1605181900175-image-20201112195140088.jpg)
 
 # gradle
 

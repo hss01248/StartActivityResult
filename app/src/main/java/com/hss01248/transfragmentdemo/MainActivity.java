@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goNotification() {
        Intent intent =  getNotificationIntent();
-        /*StartActivityUtil.goOutAppForResult(this,intent, new ActivityResultListener() {
+        StartActivityUtil.goOutAppForResult(this,intent, new ActivityResultListener() {
 
 
             @Override
@@ -55,15 +55,15 @@ public class MainActivity extends AppCompatActivity {
             public void onActivityNotFound(Throwable e) {
 
             }
-        });*/
+        });
        /**/
-       StartActivityUtil2.startActivity(this,null,intent,true, new TheActivityListener<Activity>(){
+      /* StartActivityUtil2.startActivity(this,null,intent,true, new TheActivityListener<Activity>(){
            @Override
            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
                boolean hasPermission =   NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();
                Toast.makeText(MainActivity.this,"通知栏权限:"+hasPermission,Toast.LENGTH_SHORT).show();
            }
-       });
+       });*/
     }
 
     private Intent getNotificationIntent() {
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void allCallback() {
-        StartActivityUtil2.startActivity(this, ActivityDemo2.class, null,true,
+        StartActivityUtil.startActivity(this, ActivityDemo2.class, null,true,
                 new TheActivityListener<ActivityDemo2>() {
                     @Override
                     public void onActivityCreated(@NonNull ActivityDemo2 activity, @Nullable Bundle savedInstanceState) {
@@ -114,5 +114,34 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "activity onActivityResult 回调", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    public void inner2(View view) {
+        StartActivityUtil2.startActivity(this, ActivityDemo2.class, null,true,
+                new TheActivityListener<ActivityDemo2>() {
+                    @Override
+                    public void onActivityCreated(@NonNull ActivityDemo2 activity, @Nullable Bundle savedInstanceState) {
+                        //可以在这里传递数据
+                        activity.setData(666);
+                        Toast.makeText(activity, "activity oncreate 回调", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                        super.onActivityResult(requestCode, resultCode, data);
+                        Toast.makeText(MainActivity.this, "activity onActivityResult 回调", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    public void notification2(View view) {
+        Intent intent =  getNotificationIntent();
+        StartActivityUtil2.startActivity(this,null,intent,true, new TheActivityListener<Activity>(){
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                boolean hasPermission =   NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();
+                Toast.makeText(MainActivity.this,"通知栏权限:"+hasPermission,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
