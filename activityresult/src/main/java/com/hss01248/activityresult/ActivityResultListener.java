@@ -20,9 +20,7 @@ public interface ActivityResultListener {
      * @param data
      */
      void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
-         /*if (StartActivityUtil.debugable) {
-             Log.i("onActivityResult", "req:" + requestCode + ",result:" + resultCode + ",data:" + data);
-         }*/
+
 
 
 

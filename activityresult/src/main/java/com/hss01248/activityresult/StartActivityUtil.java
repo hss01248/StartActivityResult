@@ -24,10 +24,10 @@ import androidx.fragment.app.FragmentActivity;
 public class StartActivityUtil {
 
 
-    static boolean debugable;
+    public static boolean debugable;
     static boolean hasInit;
 
-    private static void init(Application application) {
+     static void init(Application application) {
          if(hasInit){
              return;
          }
@@ -35,7 +35,7 @@ public class StartActivityUtil {
          hasInit = true;
     }
 
-    private static boolean isAppDebugable(Application application) {
+     static boolean isAppDebugable(Application application) {
         try {
             ApplicationInfo info = application.getApplicationInfo();
             return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
@@ -93,7 +93,7 @@ public class StartActivityUtil {
         }
     }
 
-    private static <T extends Activity> void registerCallback(final Application application, final Class<T> targetClazz,
+     static <T extends Activity> void registerCallback(final Application application, final Class<T> targetClazz,
                                          final TheActivityListener<T> listener) {
 
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {

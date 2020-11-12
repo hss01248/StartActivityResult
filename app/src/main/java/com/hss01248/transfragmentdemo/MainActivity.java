@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
+import com.hss01248.activityresult.StartActivityUtil2;
 import com.hss01248.activityresult.TheActivityListener;
 
 
@@ -40,18 +42,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void goNotification() {
        Intent intent =  getNotificationIntent();
-       StartActivityUtil.goOutAppForResult(this, intent, new ActivityResultListener() {
+        /*StartActivityUtil.goOutAppForResult(this,intent, new ActivityResultListener() {
 
 
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                boolean hasPermission =   NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();
+                Toast.makeText(MainActivity.this,"通知栏权限:"+hasPermission,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+
+            }
+        });*/
+       /**/
+       StartActivityUtil2.startActivity(this,null,intent,true, new TheActivityListener<Activity>(){
            @Override
            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
                boolean hasPermission =   NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();
                Toast.makeText(MainActivity.this,"通知栏权限:"+hasPermission,Toast.LENGTH_SHORT).show();
-           }
-
-           @Override
-           public void onActivityNotFound(Throwable e) {
-
            }
        });
     }
@@ -89,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void allCallback() {
-        StartActivityUtil.startActivity(this, ActivityDemo2.class, null,true,
+        StartActivityUtil2.startActivity(this, ActivityDemo2.class, null,true,
                 new TheActivityListener<ActivityDemo2>() {
                     @Override
                     public void onActivityCreated(@NonNull ActivityDemo2 activity, @Nullable Bundle savedInstanceState) {
