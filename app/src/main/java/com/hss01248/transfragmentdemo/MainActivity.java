@@ -2,10 +2,12 @@ package com.hss01248.transfragmentdemo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -20,7 +22,10 @@ import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
 import com.hss01248.activityresult.StartActivityUtil2;
 import com.hss01248.activityresult.TheActivityListener;
+import com.hss01248.transactivity.DialogPriorityUtil;
 import com.hss01248.transactivity.TransActivity;
+import com.hss01248.transfragmentdemo.databinding.ActivityMainBinding;
+import com.hss01248.transfragmentdemo.databinding.ViewTestToastBinding;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -171,5 +176,31 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void dialogAsToast(View view) {
+       // ViewTestToastBinding mainBinding = ViewTestToastBinding.inflate(getLayoutInflater(),findViewById(android.R.id.content),false);
+        View view1 = View.inflate(this,R.layout.view_test_toast,null);
+        DialogPriorityUtil.showViewAsDialogWithPriority(this,view1,9);
+
+
+        View view2 = View.inflate(this,R.layout.view_test_toast2,null);
+       /* Dialog dialog = new Dialog(this);
+        dialog.setContentView(view2);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            dialog.getWindow().setElevation(3);
+        }
+
+        dialog.show();*/
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setView(view2)
+                .create();
+        alertDialog.show();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            alertDialog.getWindow().setElevation(0);
+        }
+
+
     }
 }
