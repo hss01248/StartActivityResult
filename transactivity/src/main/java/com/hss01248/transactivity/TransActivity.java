@@ -2,18 +2,15 @@ package com.hss01248.transactivity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -77,9 +74,9 @@ public class TransActivity extends AppCompatActivity {
     public void init(ITransActivityConfig transActivityConfig){
 
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        setContentView(R.layout.activity_trans_dialog);
+        setContentView(R.layout.activity_trans_dialog_v2);
        // container = findViewById(R.id.fl_container);
-        rlRoot = findViewById(R.id.rl_root);
+
 
        /* ViewGroup.LayoutParams layoutParams = rlRoot.getLayoutParams();
         layoutParams.height = getScreenHeight();
@@ -100,6 +97,8 @@ public class TransActivity extends AppCompatActivity {
         this.config = transActivityConfig;
         View view = config.initView(this);
         setLayoutParams(view,config);
+
+        rlRoot = findViewById(R.id.rl_root);
         rlRoot.addView(view);
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -125,11 +124,6 @@ public class TransActivity extends AppCompatActivity {
     }
 
     private void setLayoutParams(View container, ITransActivityConfig config) {
-
-
-
-
-
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         //宽高:
