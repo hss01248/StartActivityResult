@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="trans_DialogActivity3" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/trans_BottomInOutAnimation</item>
+    </style>
+
+    <style name="trans_BottomInOutAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/anim_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_bottom_out</item>
+    </style>
+    <!--        <item name="android:backgroundDimEnabled">true</item>
+     <item name="android:windowIsTranslucent">true</item>
+     <item name="android:windowAnimationStyle">@style/Dialog_BottomInOutAnimation</item>
+        <item name="colorAccent">@color/ui_color_e62117</item>-->
+</resources>

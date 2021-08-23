@@ -1,2 +1,3 @@
+include ':transactivity'
 include ':app', ':transfrag', ':activityresult'
 rootProject.name='TransparentFragmentdemo'

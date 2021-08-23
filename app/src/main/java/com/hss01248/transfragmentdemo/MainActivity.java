@@ -11,13 +11,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
 import com.hss01248.activityresult.StartActivityUtil2;
 import com.hss01248.activityresult.TheActivityListener;
+import com.hss01248.transactivity.TransActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -142,6 +145,31 @@ public class MainActivity extends AppCompatActivity {
                 boolean hasPermission =   NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();
                 Toast.makeText(MainActivity.this,"通知栏权限:"+hasPermission,Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+
+    public void activityAsDialog(View view) {
+        TransActivity.start(this, new TransActivity.ITransActivityConfig() {
+            @Override
+            public View initView(Activity activity) {
+                return activity.getLayoutInflater().inflate(R.layout.activity_main, (ViewGroup) activity.findViewById(android.R.id.content),false);
+            }
+
+            @Override
+            public boolean canceledOnTouchOutside() {
+                return true;
+            }
+
+            @Override
+            public boolean cancelable() {
+                return false;
+            }
+
+            @Override
+            public float forceHeight() {
+                return 0.65f;
+            }
+
         });
     }
 }
