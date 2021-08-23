@@ -9,8 +9,9 @@ import androidx.fragment.app.FragmentActivity;
 
 
 /**
- * 使用Androidx里的api实现
+ * 使用Androidx里的api实现 辣鸡api
  */
+@Deprecated
 public class StartActivityUtil2 {
 
     public static <T extends Activity> void startActivity(@NonNull final Activity activity,

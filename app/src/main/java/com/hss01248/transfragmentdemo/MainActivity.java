@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void inner2(View view) {
-        StartActivityUtil2.startActivity(this, ActivityDemo2.class, null,true,
+        StartActivityUtil.startActivity(this, ActivityDemo2.class, null,true,
                 new TheActivityListener<ActivityDemo2>() {
                     @Override
                     public void onActivityCreated(@NonNull ActivityDemo2 activity, @Nullable Bundle savedInstanceState) {
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void notification2(View view) {
         Intent intent =  getNotificationIntent();
-        StartActivityUtil2.startActivity(this,null,intent,true, new TheActivityListener<Activity>(){
+        StartActivityUtil.startActivity(this,null,intent,true, new TheActivityListener<Activity>(){
             @Override
             public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
                 boolean hasPermission =   NotificationManagerCompat.from(MainActivity.this).areNotificationsEnabled();

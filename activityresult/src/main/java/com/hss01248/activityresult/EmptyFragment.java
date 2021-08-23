@@ -3,9 +3,9 @@ package com.hss01248.activityresult;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
+/*
 import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContract;*/
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,7 +23,7 @@ public class EmptyFragment extends BaseTransFragment<Intent> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        registerForActivityResult(new ActivityResultContract<Object, Intent>() {
+       /* registerForActivityResult(new ActivityResultContract<Object, Intent>() {
             @NonNull
             @Override
             public Intent createIntent(@NonNull Context context, Object input) {
@@ -42,6 +42,6 @@ public class EmptyFragment extends BaseTransFragment<Intent> {
                 //Toast.makeText(activity,result.toString(),Toast.LENGTH_SHORT).show();
 
             }
-        }).launch("");
+        }).launch("");*/
     }
 }
