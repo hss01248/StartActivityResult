@@ -12,7 +12,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -193,12 +195,21 @@ public class MainActivity extends AppCompatActivity {
 
         dialog.show();*/
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
+       /* AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setView(view2)
-                .create();
+                .create();*/
+        Dialog alertDialog = new Dialog(this);
+        alertDialog.setContentView(view2);
         alertDialog.show();
+        Log.w("type",alertDialog.getWindow().getAttributes().type+"  ....");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.w("type2",alertDialog.getWindow().getAttributes().type+"  ....");
+            }
+        },1000);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            alertDialog.getWindow().setElevation(0);
+            //alertDialog.getWindow().setElevation(0);
         }
 
 
