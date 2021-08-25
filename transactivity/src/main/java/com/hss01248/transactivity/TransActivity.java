@@ -176,12 +176,7 @@ public class TransActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        transStatusbar();
-    }
 
     private void transStatusbar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -207,4 +202,26 @@ public class TransActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
+
+    @Override
+    public void finish() {
+        rlRoot.setBackgroundColor(Color.TRANSPARENT);
+        super.finish();
+        overridePendingTransition(0, R.anim.anim_bottom_out_trans_activity);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.anim_bottom_in_trans_activity, R.anim.anim_bottom_out_trans_activity);
+        super.onCreate(savedInstanceState);
+        transStatusbar();
+       /* rlRoot.setBackgroundColor(Color.TRANSPARENT);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rlRoot.setBackgroundColor(Color.TRANSPARENT);
+            }
+        },200);*/
+    }
+
 }

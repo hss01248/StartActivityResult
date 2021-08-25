@@ -9,11 +9,27 @@
     </style>
 
     <style name="trans_BottomInOutAnimation" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/anim_bottom_in</item>
-        <item name="android:windowExitAnimation">@anim/anim_bottom_out</item>
+        <item name="android:windowEnterAnimation">@anim/anim_bottom_in_trans_activity</item>
+        <item name="android:windowExitAnimation">@anim/anim_bottom_out_trans_activity</item>
+        <item name="android:activityCloseEnterAnimation">@anim/anim_bottom_out_trans_activity</item>
+        <item name="android:activityCloseExitAnimation">@anim/anim_bottom_out_trans_activity</item>
     </style>
     <!--        <item name="android:backgroundDimEnabled">true</item>
      <item name="android:windowIsTranslucent">true</item>
      <item name="android:windowAnimationStyle">@style/Dialog_BottomInOutAnimation</item>
         <item name="colorAccent">@color/ui_color_e62117</item>-->
+
+
+    <style name="anim_activity_global_in_out" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_open_in_anim_lr</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_open_out_anim_lr</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_close_in_anim_lr</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_close_out_anim_lr</item>
+    </style>
+
+    <style name="demo_app_theme_all" mce_bogus="1" parent="@android:style/Theme.NoTitleBar">
+
+        <item name="android:windowAnimationStyle">@style/anim_activity_global_in_out</item>
+
+    </style>
 </resources>
