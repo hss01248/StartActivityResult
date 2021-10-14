@@ -24,6 +24,10 @@ dependencies {
    implementation 'com.github.hss01248.StartActivityResult:activityresult:1.0.1'//依赖这一个即可
    implementation   'com.github.hss01248.StartActivityResult:transfrag:1.0.1'
    
+   com.github.hss01248.StartActivityResult:activityresult:1.1.2
+com.github.hss01248.StartActivityResult:transactivity:1.1.2 //使用dialog样式的activity
+com.github.hss01248.StartActivityResult:transfrag:1.1.2
+   
 }
 ```
 
