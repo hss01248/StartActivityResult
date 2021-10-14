@@ -200,14 +200,26 @@ public class TransActivity extends AppCompatActivity {
                 return;
             }
         }
-        super.onBackPressed();
+        try {
+            super.onBackPressed();
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+        }
+
     }
 
     @Override
     public void finish() {
-        rlRoot.setBackgroundColor(Color.TRANSPARENT);
-        super.finish();
-        overridePendingTransition(0, R.anim.anim_bottom_out_trans_activity);
+        try {
+            if(rlRoot != null){
+                rlRoot.setBackgroundColor(Color.TRANSPARENT);
+            }
+            super.finish();
+            overridePendingTransition(0, R.anim.anim_bottom_out_trans_activity);
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+        }
+
     }
 
     @Override
