@@ -20,10 +20,15 @@ import java.util.Random;
         super(activity, intent);
     }
     ActivityResultListener listener;
+    int requestCode;
     public void startActivityForResult(ActivityResultListener listener){
         try {
             this.listener = listener;
-            startActivityForResult(bean,new Random().nextInt(589));
+            requestCode = new Random().nextInt(589);
+            if(!listener.onInterceptStartIntent(this,bean,requestCode)){
+                startActivityForResult(bean,requestCode);
+            }
+
         }catch (Throwable e){
             listener.onActivityNotFound(e);
             if(StartActivityUtil.debugable){
@@ -40,6 +45,15 @@ import java.util.Random;
         }
         listener.onActivityResult(requestCode,resultCode,data);
         finish();
+        if(requestCode == this.requestCode){
+            //listener.onActivityResult(requestCode,resultCode,data);
+            //finish();
+        }else {
+            if (StartActivityUtil.debugable) {
+                Log.w("onActivityResult", "reqcode not same:" + requestCode + ",this.requestCode:" + this.requestCode );
+            }
+        }
+
 
     }
 }

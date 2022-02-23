@@ -30,7 +30,9 @@ import java.util.Random;
         requestCode = new Random().nextInt(8799);
         this.listener = listener;
         try {
-            startActivityForResult(bean,requestCode);
+            if(!listener.onInterceptStartIntent(this,bean,requestCode)){
+                startActivityForResult(bean,requestCode);
+            }
         }catch (Throwable throwable){
             listener.onActivityNotFound(throwable);
             finish();

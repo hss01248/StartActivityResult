@@ -53,6 +53,48 @@ start a activity and set data in it's onCreate listener, rather then send data b
 
 and get result in listener, not in activity's onActivityResult callback
 
+## 接口定义:
+
+```java
+public interface ActivityResultListener {
+
+    /**
+     *
+     * @param fragment
+     * @param intent
+     * @return 返回值代表是否拦截原默认行为. 如果
+     * 调用处为: if(!listener.onInterceptStartIntent(this,bean)){
+     *                 startActivityForResult(bean,requestCode);
+     *             }
+     */
+    default boolean onInterceptStartIntent(@NonNull Fragment fragment, @Nullable Intent intent, int requestCode){
+        return false;
+    }
+
+    /**
+     * 在里面自己处理
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+     void onActivityResult(int requestCode, int resultCode, @Nullable Intent data);
+
+
+
+
+
+     void onActivityNotFound(Throwable e) ;
+}
+```
+
+
+
+
+
+
+
+
+
 ```
 StartActivityUtil.startActivity(this, ActivityDemo2.class, null,true,
         new TheActivityListener<ActivityDemo2>() {
