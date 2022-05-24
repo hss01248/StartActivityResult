@@ -33,7 +33,13 @@ public  class BaseTransFragment<Bean> extends Fragment {
 
     protected IEventCallback callback;
 
+
+    public BaseTransFragment(){
+        super();
+    }
+
     public BaseTransFragment(FragmentActivity activity, Bean bean) {
+        this();
         this.activity = activity;
         this.bean = bean;
         startFragmentTransaction();

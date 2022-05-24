@@ -22,6 +22,10 @@ import java.util.Random;
     boolean startWaitingResult;
     boolean consumed;
 
+    public GoOutOfAppForResultFragment() {
+        super();
+    }
+
     public GoOutOfAppForResultFragment(FragmentActivity activity, Intent intent) {
         super(activity, intent);
     }
@@ -44,6 +48,22 @@ import java.util.Random;
         super.onStop();
         startWaitingResult = true;
     }
+
+    //todo 一些半屏activity,只触发fragment的onPause, 不触发onStop
+   /* @Override
+    public void onPause() {
+        super.onPause();
+        startWaitingResult = true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(startWaitingResult && !consumed){
+            onStartOfResultBack(requestCode,66,null);
+            startWaitingResult = false;
+        }
+    }*/
 
 
     /**
@@ -78,6 +98,8 @@ import java.util.Random;
             startWaitingResult = false;
         }
     }
+
+
 
     protected void onStartOfResultBack(int requestCode, int resultCode, @Nullable Intent data) {
         listener.onActivityResult(requestCode,resultCode,data);
