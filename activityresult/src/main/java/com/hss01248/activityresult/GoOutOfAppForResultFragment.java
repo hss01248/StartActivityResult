@@ -102,7 +102,10 @@ import java.util.Random;
 
 
     protected void onStartOfResultBack(int requestCode, int resultCode, @Nullable Intent data) {
-        listener.onActivityResult(requestCode,resultCode,data);
+        if(listener != null){
+            listener.onActivityResult(requestCode,resultCode,data);
+        }
+
         if (StartActivityUtil.debugable) {
             Log.i("onActivityResult2", "req:" + requestCode + ",result:onStartOfResultBack,data:null" );
         }

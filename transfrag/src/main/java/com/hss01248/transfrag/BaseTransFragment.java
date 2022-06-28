@@ -164,6 +164,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
         if(callback != null){
             callback.onDestroy();
         }
+        finish();
     }
 
 

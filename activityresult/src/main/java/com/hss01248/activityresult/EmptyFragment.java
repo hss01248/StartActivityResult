@@ -14,6 +14,11 @@ import androidx.fragment.app.FragmentActivity;
 import com.hss01248.transfrag.BaseTransFragment;
 
 public class EmptyFragment extends BaseTransFragment<Intent> {
+
+    public EmptyFragment() {
+        super();
+    }
+
     ActivityResultListener listener;
     public EmptyFragment(FragmentActivity activity, Intent o) {
         super(activity, o);

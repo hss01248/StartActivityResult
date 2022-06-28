@@ -16,6 +16,11 @@ import java.util.Random;
  * desription:
  */
  public class InAppResultFragment extends BaseTransFragment<Intent> {
+
+    public InAppResultFragment() {
+        super();
+    }
+
     public InAppResultFragment(FragmentActivity activity, Intent intent) {
         super(activity, intent);
     }
@@ -43,7 +48,9 @@ import java.util.Random;
         if (StartActivityUtil.debugable) {
             Log.i("onActivityResult", "req:" + requestCode + ",result:" + resultCode + ",data:" + data);
         }
-        listener.onActivityResult(requestCode,resultCode,data);
+        if(listener != null){
+            listener.onActivityResult(requestCode,resultCode,data);
+        }
         finish();
         if(requestCode == this.requestCode){
             //listener.onActivityResult(requestCode,resultCode,data);
