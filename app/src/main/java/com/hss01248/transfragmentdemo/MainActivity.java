@@ -48,6 +48,36 @@ public class MainActivity extends AppCompatActivity {
                 goNotification();
             }
         });
+        findViewById(R.id.btn_pick_photo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickPhoto();
+            }
+        });
+    }
+
+    private void pickPhoto() {
+        Intent intent =  new Intent();
+        //intent.setType("video/*;image/*");//同时选择视频和图片
+        intent.setType("image/*");//
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
+        //打开方式有两种action，1.ACTION_PICK；2.ACTION_GET_CONTENT 区分大意为：
+        // ACTION_PICK 为打开特定数据一个列表来供用户挑选，其中数据为现有的数据。而 ACTION_GET_CONTENT 区别在于它允许用户创建一个之前并不存在的数据。
+        intent.setAction(Intent.ACTION_PICK);
+        StartActivityUtil.goOutAppForResult(this,intent, new ActivityResultListener() {
+
+
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                String data2 = data==null ? "": data.getDataString();
+                Toast.makeText(MainActivity.this,"resultCode:"+resultCode+", "+data2,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+
+            }
+        });
     }
 
     private void goNotification() {

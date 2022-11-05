@@ -33,6 +33,9 @@ import java.util.Random;
     public void goOutApp(ActivityResultListener listener){
         requestCode = new Random().nextInt(8799);
         this.listener = listener;
+        if (StartActivityUtil.debugable) {
+            Log.i("startActivityForResult", "frag req:" + requestCode );
+        }
         try {
             if(!listener.onInterceptStartIntent(this,bean,requestCode)){
                 startActivityForResult(bean,requestCode);
@@ -78,7 +81,7 @@ import java.util.Random;
         if(startWaitingResult){
             consumed = true;
             if (StartActivityUtil.debugable) {
-                Log.i("onActivityResult", "req:" + requestCode + ",result:" + resultCode + ",data:" + data);
+                Log.i("onActivityResult", "frag req:" + requestCode + ",result:" + resultCode + ",data:" + data);
             }
             onStartOfResultBack(requestCode,resultCode,data);
 
@@ -107,7 +110,7 @@ import java.util.Random;
         }
 
         if (StartActivityUtil.debugable) {
-            Log.i("onActivityResult2", "req:" + requestCode + ",result:onStartOfResultBack,data:null" );
+            Log.i("onActivityResult2", "frag req:" + requestCode + ",result:onStartOfResultBack,data:null" );
         }
         finish();
 

@@ -20,8 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <Button
+        android:id="@+id/btn_pick_photo"
+        android:text="跳到系统选图界面-有回调"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
         android:id="@+id/btn_notification"
-        android:text="跳到系统通知权限界面"
+        android:text="跳到系统通知权限界面-无回调"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
