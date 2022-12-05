@@ -36,4 +36,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project (':activityresult')
     implementation project (':transactivity')
+    api 'com.blankj:utilcodex:1.30.6'
+    //api "com.github.hss01248.MyPermission:location:2.2.4"
 }

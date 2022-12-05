@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,14 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
-import com.hss01248.activityresult.StartActivityUtil2;
 import com.hss01248.activityresult.TheActivityListener;
 import com.hss01248.transactivity.DialogPriorityUtil;
 import com.hss01248.transactivity.TransActivity;
-import com.hss01248.transfragmentdemo.databinding.ActivityMainBinding;
-import com.hss01248.transfragmentdemo.databinding.ViewTestToastBinding;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -243,5 +243,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void pickAudio(View view) {
+
+       // Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+        Intent intent = new Intent();
+        intent.setType("audio/*");//
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
+        //打开方式有两种action，1.ACTION_PICK；2.ACTION_GET_CONTENT 区分大意为：
+        // ACTION_PICK 为打开特定数据一个列表来供用户挑选，其中数据为现有的数据。而 ACTION_GET_CONTENT 区别在于它允许用户创建一个之前并不存在的数据。
+        intent.setAction(Intent.ACTION_PICK);
+        StartActivityUtil.goOutAppForResult(this, intent, new ActivityResultListener() {
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                LogUtils.w(data);
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
