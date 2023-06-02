@@ -25,8 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <Button
-        android:text="跳到系统选音频姐妹-兼容性问题处理"
+        android:text="跳到系统选音频界面-兼容性问题处理"
         android:onClick="pickAudio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:text="跳到系统选视频频界面-兼容性问题处理"
+        android:onClick="pickVideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <Button

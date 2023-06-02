@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -21,13 +22,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
 import com.hss01248.activityresult.TheActivityListener;
+import com.hss01248.permission.MyPermissions;
 import com.hss01248.transactivity.DialogPriorityUtil;
 import com.hss01248.transactivity.TransActivity;
 
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -265,5 +270,37 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void pickVideo(View view) {
+        MyPermissions.requestByMostEffort(false, true,
+                new PermissionUtils.FullCallback() {
+                    @Override
+                    public void onGranted(@NonNull List<String> granted) {
+                        Intent intent = new Intent();
+                        intent.setType("video/*");//
+                        //intent.setAction(Intent.ACTION_GET_CONTENT);
+                        //打开方式有两种action，1.ACTION_PICK；2.ACTION_GET_CONTENT 区分大意为：
+                        // ACTION_PICK 为打开特定数据一个列表来供用户挑选，其中数据为现有的数据。而 ACTION_GET_CONTENT 区别在于它允许用户创建一个之前并不存在的数据。
+                        intent.setAction(Intent.ACTION_PICK);
+                        LogUtils.w("topActivity: "+ActivityUtils.getTopActivity());
+                        StartActivityUtil.goOutAppForResult(ActivityUtils.getTopActivity(), intent, new ActivityResultListener() {
+                            @Override
+                            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                                LogUtils.w(data);
+                            }
+
+                            @Override
+                            public void onActivityNotFound(Throwable e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onDenied(@NonNull List<String> deniedForever, @NonNull List<String> denied) {
+                        Toast.makeText(MainActivity.this, "[read external storage] permission denied", Toast.LENGTH_LONG).show();
+                    }
+                }, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 }
