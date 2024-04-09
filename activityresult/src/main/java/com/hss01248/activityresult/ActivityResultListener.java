@@ -29,6 +29,23 @@ public interface ActivityResultListener {
     }
 
     /**
+     * 弹出的界面是不是半弹窗-->导致不走onSop,只走onPause
+     * @return
+     */
+    default boolean configUIAsDialog(){
+        return false;
+    }
+
+    /**
+     * 是不是可能有真实的立刻回调. 一般都没有,因为要弹出界面.
+     * 但mediastore.createDeteleReqeust在有manage media权限时,就会有
+     * @return
+     */
+    default boolean configHaveRealImmediatelyCallback(){
+        return false;
+    }
+
+    /**
      * 在里面自己处理
      * @param requestCode
      * @param resultCode

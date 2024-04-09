@@ -104,7 +104,12 @@ import java.util.Random;
         lastPause = System.currentTimeMillis();
         //对于打开通知权限这种,没有回调的,就会在onpause后立刻回调onActivityResult
         //如何处理? --> 在onStop后开始响应onActivityResult
-        startWaitingResult = true;
+        if(listener.configUIAsDialog()){
+            startWaitingResult = true;
+        }
+
+        //但是又会有那些真的不用弹窗弹界面,直接回调的
+        //最终解决方式:外部配置,让使用者自己决定
     }
 
     @Override
@@ -147,22 +152,29 @@ import java.util.Random;
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(debugable){
-            Log.d("frag","onActivityResult0:"+this);
+            Log.d("frag","onActivityResult0:"+this+", startWaitingResult:"+startWaitingResult);
         }
-        if(System.currentTimeMillis() - lastPause < 500){
+        /*if(System.currentTimeMillis() - lastPause < 500){
             if (StartActivityUtil.debugable) {
                 Log.w("onActivityResult", "onActivityResult和onpause间隔太短,是无效的:" + requestCode + ",result:" + resultCode + ",data:" + data);
             }
             return;
-        }
-        if(startWaitingResult){
+        }*/
+        if(listener.configHaveRealImmediatelyCallback()){
             consumed = true;
             if (StartActivityUtil.debugable) {
                 Log.i("onActivityResult", "frag req:" + requestCode + ",result:" + resultCode + ",data:" + data);
             }
             onStartOfResultBack(requestCode,resultCode,data);
-
-            //不会在回来时回调,而是一跳出去就回调,resultcode是cancel,所以这个方法不能用
+        }else{
+            if(startWaitingResult){
+                consumed = true;
+                if (StartActivityUtil.debugable) {
+                    Log.i("onActivityResult", "frag req:" + requestCode + ",result:" + resultCode + ",data:" + data);
+                }
+                onStartOfResultBack(requestCode,resultCode,data);
+                //不会在回来时回调,而是一跳出去就回调,resultcode是cancel,所以这个方法不能用
+            }
         }
         //consumed = true;
         //listener.onActivityResult(requestCode,resultCode,data);
