@@ -25,14 +25,21 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
 import com.hss01248.activityresult.TheActivityListener;
+import com.hss01248.image.dataforphotoselet.ImgDataSeletor;
 import com.hss01248.permission.MyPermissions;
 import com.hss01248.transactivity.DialogPriorityUtil;
 import com.hss01248.transactivity.TransActivity;
 
+import org.devio.takephoto.wrap.TakeOnePhotoListener;
+
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -302,5 +309,49 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "[read external storage] permission denied", Toast.LENGTH_LONG).show();
                     }
                 }, Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    public void halfDialog(View view) {
+        ImgDataSeletor.startPickOneWitchDialog(this, new TakeOnePhotoListener() {
+            @Override
+            public void onSuccess(String path) {
+               /* File file = new File(path);
+                boolean delete = file.delete();
+                ToastUtils.showLong("是否删除成功:"+ delete);*/
+                //即使是true,也会被小米系统拦截
+                FileDeleteUtil.deleteImage(path,true, new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@io.reactivex.annotations.NonNull Boolean aBoolean) {
+                        ToastUtils.showLong("是否删除成功:"+ aBoolean);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFail(String path, String msg) {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
     }
 }

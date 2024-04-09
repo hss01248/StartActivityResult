@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    compileSdkVersion 33
+    buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.hss01248.transfragmentdemo"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 24
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -37,7 +37,10 @@ dependencies {
     implementation project (':activityresult')
     implementation project (':transactivity')
     api 'com.blankj:utilcodex:1.30.6'
+    implementation "androidx.multidex:multidex:2.0.1"
     api 'com.github.hss01248.MyPermission:permission:2.2.9'
+    api('com.github.skyNet2017.Luban:dataForPhotoSelet:3.3.0')
+    api 'com.github.getActivity:XXPermissions:11.6'
     //api "com.github.hss01248.MyPermission:location:2.2.4"
 }
 configurations {

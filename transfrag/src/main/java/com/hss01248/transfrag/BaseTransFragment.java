@@ -42,8 +42,9 @@ public  class BaseTransFragment<Bean> extends Fragment {
         this();
         this.activity = activity;
         this.bean = bean;
-        startFragmentTransaction();
+        startFragmentTransaction(activity,this);
     }
+
 
 
     /**
@@ -54,12 +55,13 @@ public  class BaseTransFragment<Bean> extends Fragment {
      * 而不会去调用它的 onResume 方法，最后当 Activity 从后台返回到前台时，不仅会触发 Activity.onResume 方法，
      * 同时也会触发 PermissionFragment 的 onResume 方法，在这个方法申请权限就可以保证最终 requestPermissions 申请的时机是在 Activity 处于可见状态的情况下。
      */
-    private void startFragmentTransaction() {
+    public static void startFragmentTransaction(FragmentActivity activity, Fragment fragment) {
         try {
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .add(this, UUID.randomUUID().toString())
+                        .add(fragment, UUID.randomUUID().toString())
                         .commitNowAllowingStateLoss();
+           // firstResume = true;
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -72,6 +74,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
         if(debugable){
             Log.d("frag","onCreate:"+this);
         }
+       // firstResume = true;
     }
 
     @Override
@@ -83,7 +86,6 @@ public  class BaseTransFragment<Bean> extends Fragment {
         if(callback != null){
             callback.onStart();
         }
-
     }
 
     @Override
@@ -130,7 +132,6 @@ public  class BaseTransFragment<Bean> extends Fragment {
         if(callback != null){
             callback.onStop();
         }
-
     }
 
     @Override
@@ -141,6 +142,7 @@ public  class BaseTransFragment<Bean> extends Fragment {
         }
         if(callback != null){
             callback.onActivityResult(requestCode, resultCode, data);
+            finish(this);
         }
     }
 
@@ -164,13 +166,13 @@ public  class BaseTransFragment<Bean> extends Fragment {
         if(callback != null){
             callback.onDestroy();
         }
-        finish();
+        finish(this);
     }
 
 
-    public void finish(){
+    public static void finish(Fragment fragment){
         try {
-            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+            fragment.getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
         }catch (Throwable throwable){
             throwable.printStackTrace();
         }
