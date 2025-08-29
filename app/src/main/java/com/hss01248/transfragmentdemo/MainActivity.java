@@ -29,6 +29,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
 import com.hss01248.activityresult.TheActivityListener;
+import com.hss01248.activityresult.androidx.ActivityResultHelper;
 import com.hss01248.image.dataforphotoselet.ImgDataSeletor;
 import com.hss01248.permission.MyPermissions;
 import com.hss01248.transactivity.DialogPriorityUtil;
@@ -351,6 +352,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
 
+            }
+        });
+    }
+
+    public void activityResultLauncher(View view) {
+// 准备目标Intent
+        Intent intent = new Intent();
+        intent.setType("video/*");//
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
+        //打开方式有两种action，1.ACTION_PICK；2.ACTION_GET_CONTENT 区分大意为：
+        // ACTION_PICK 为打开特定数据一个列表来供用户挑选，其中数据为现有的数据。而 ACTION_GET_CONTENT 区别在于它允许用户创建一个之前并不存在的数据。
+        intent.setAction(Intent.ACTION_PICK);
+
+// 调用工具类
+        ActivityResultHelper.startForResult(this, intent, new ActivityResultHelper.ActivityResultCallback() {
+            @Override
+            public void onSuccess(Intent data) {
+                // 处理成功回调
+                LogUtils.w(data);
+            }
+
+            @Override
+            public void onFailure(int resultCode, Intent data) {
+                // 处理失败回调
+                LogUtils.w(resultCode,data);
             }
         });
     }

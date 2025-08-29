@@ -11,6 +11,12 @@
 <!--fragment实现-->
     <TextView
         android:layout_width="match_parent"
+        android:text="activityResultLauncher:"
+        android:padding="20dp"
+        android:onClick="activityResultLauncher"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="match_parent"
         android:text="fragment实现:"
         android:padding="20dp"
         android:layout_height="wrap_content"/>
