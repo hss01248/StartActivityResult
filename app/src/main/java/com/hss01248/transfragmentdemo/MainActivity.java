@@ -366,17 +366,39 @@ public class MainActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_PICK);
 
 // 调用工具类
-        ActivityResultHelper.startForResult(this, intent, new ActivityResultHelper.ActivityResultCallback() {
+        ActivityResultHelper.startForResult(this, intent, new ActivityResultListener() {
             @Override
-            public void onSuccess(Intent data) {
-                // 处理成功回调
-                LogUtils.w(data);
+            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                LogUtils.w(resultCode,data);
             }
 
             @Override
-            public void onFailure(int resultCode, Intent data) {
-                // 处理失败回调
+            public void onActivityNotFound(Throwable e) {
+
+            }
+        });
+    }
+
+    public void activityResultLauncherNoResult(View view) {
+        Intent intent = new Intent();
+        // 设置动作：打开应用详情页面
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        // 设置要打开的应用的包名（这里使用当前应用的包名）
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        // 确保intent可以被处理
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            //context.startActivity(intent);
+        }
+        ActivityResultHelper.startForResult(this, intent, new ActivityResultListener() {
+            @Override
+            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
                 LogUtils.w(resultCode,data);
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+
             }
         });
     }
