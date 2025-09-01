@@ -1,5 +1,6 @@
 package com.hss01248.activityresult2.androidx;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -41,15 +42,22 @@ public class StartActivityResultHelper {
     private static HashMap<Integer, ActivityResultCallback> callbackMap = new HashMap<>();
 
     // 启动流程的入口方法
-    public static void startForResult(Context context, Intent targetIntent, ActivityResultCallback callback) {
-        init(context.getApplicationInfo());
-        ComponentName componentName = targetIntent.resolveActivity(context.getPackageManager());
+
+    /**
+     * Consider adding a <queries> declaration to your manifest when calling this method; see https://g.co/dev/packagevisibility for details
+     * @param activity
+     * @param targetIntent
+     * @param callback
+     */
+    public static void startForResult(Activity activity, Intent targetIntent, ActivityResultCallback callback) {
+        init(activity.getApplicationInfo());
+        ComponentName componentName = targetIntent.resolveActivity(activity.getPackageManager());
         if (componentName == null) {
             //找不到对应的activity
             callback.onActivityNotFound(new Throwable("Activity not found"));
             return;
         }
-        if (componentName.getPackageName().equals(context.getPackageName())) {
+        if (componentName.getPackageName().equals(activity.getPackageName())) {
             // 启动的activity是本app的
             if(debugable){
                 Log.d("ActivityResultx","启动的activity是本app的,"+componentName.getClassName());
@@ -64,11 +72,23 @@ public class StartActivityResultHelper {
         if(debugable){
             Log.v("ActivityResultx","intent hash0,"+targetIntent.hashCode());
         }
-        Intent intent = new Intent(context, TransparentActivity.class);
-        intent.putExtra("target_intent", targetIntent);
-        intent.putExtra("target_intent_hash", targetIntent.hashCode());
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        try{
+            Intent intent = new Intent(activity, TransparentActivity.class);
+            intent.putExtra("target_intent", targetIntent);
+            intent.putExtra("target_intent_hash", targetIntent.hashCode());
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(intent);
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+            ActivityResultCallback remove = callbackMap.remove(targetIntent.hashCode());
+            if(remove != null){
+                remove.onActivityNotFound(throwable);
+            }else {
+                if(debugable){
+                    Log.w("ActivityResultx","ActivityResultListener callback is null,"+targetIntent.hashCode());
+                }
+            }
+        }
     }
 
 
@@ -91,7 +111,6 @@ public class StartActivityResultHelper {
                 remove.onActivityResult(resultCode,data);
             }
         },1000);
-
     }
     /**
      * 创建一个与原Intent数据相同但完全独立的新Intent
