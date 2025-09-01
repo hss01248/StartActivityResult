@@ -67,7 +67,7 @@ public class StartActivityResultHelper {
         Intent intent = new Intent(context, TransparentActivity.class);
         intent.putExtra("target_intent", targetIntent);
         intent.putExtra("target_intent_hash", targetIntent.hashCode());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
