@@ -15,7 +15,7 @@ use a transparent fragment to handle callbacks of activity in listener style api
 
 
 ```groovy
-implementation 'com.github.hss01248.StartActivityResult:activityresult2:2.0.0'
+implementation 'com.github.hss01248.StartActivityResult:activityresult2:2.0.1'
 ```
 
 
