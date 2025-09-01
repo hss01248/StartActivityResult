@@ -36,6 +36,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project (':activityresult')
     implementation project (':transactivity')
+    implementation project (':activityresult2')
     api 'com.blankj:utilcodex:1.30.6'
     implementation "androidx.multidex:multidex:2.0.1"
     api 'com.github.hss01248.MyPermission:permission:2.2.9'

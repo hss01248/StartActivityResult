@@ -29,7 +29,8 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.hss01248.activityresult.ActivityResultListener;
 import com.hss01248.activityresult.StartActivityUtil;
 import com.hss01248.activityresult.TheActivityListener;
-import com.hss01248.activityresult.androidx.ActivityResultHelper;
+import com.hss01248.activityresult2.ActivityResultCallback;
+import com.hss01248.activityresult2.androidx.StartActivityResultHelper;
 import com.hss01248.image.dataforphotoselet.ImgDataSeletor;
 import com.hss01248.permission.MyPermissions;
 import com.hss01248.transactivity.DialogPriorityUtil;
@@ -357,18 +358,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void activityResultLauncher(View view) {
-// 准备目标Intent
+        // 准备目标Intent
         Intent intent = new Intent();
         intent.setType("video/*");//
         //intent.setAction(Intent.ACTION_GET_CONTENT);
         //打开方式有两种action，1.ACTION_PICK；2.ACTION_GET_CONTENT 区分大意为：
         // ACTION_PICK 为打开特定数据一个列表来供用户挑选，其中数据为现有的数据。而 ACTION_GET_CONTENT 区别在于它允许用户创建一个之前并不存在的数据。
         intent.setAction(Intent.ACTION_PICK);
-
-// 调用工具类
-        ActivityResultHelper.startForResult(this, intent, new ActivityResultListener() {
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
             @Override
-            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
                 LogUtils.w(resultCode,data);
             }
 
@@ -386,13 +385,9 @@ public class MainActivity extends AppCompatActivity {
         // 设置要打开的应用的包名（这里使用当前应用的包名）
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
-        // 确保intent可以被处理
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            //context.startActivity(intent);
-        }
-        ActivityResultHelper.startForResult(this, intent, new ActivityResultListener() {
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
             @Override
-            public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
                 LogUtils.w(resultCode,data);
             }
 

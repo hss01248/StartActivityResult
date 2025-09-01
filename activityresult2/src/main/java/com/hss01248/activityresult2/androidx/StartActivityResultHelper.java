@@ -1,27 +1,48 @@
-package com.hss01248.activityresult.androidx;
+package com.hss01248.activityresult2.androidx;
 
-import android.app.Activity;
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.hss01248.activityresult.ActivityResultListener;
+
+import com.hss01248.activityresult2.ActivityResultCallback;
 
 import java.util.HashMap;
 import java.util.Set;
-import java.util.WeakHashMap;
 
-public class ActivityResultHelper {
+public class StartActivityResultHelper {
+
+    public static boolean debugable;
+    static boolean hasInit;
+
+    static void init(ApplicationInfo info) {
+        if(hasInit){
+            return;
+        }
+        debugable = isAppDebugable(info);
+        hasInit = true;
+    }
+
+    static boolean isAppDebugable(ApplicationInfo info) {
+        try {
+            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     // 静态回调引用
-    private static HashMap<Integer,ActivityResultListener> callbackMap = new HashMap<>();
+    private static HashMap<Integer, ActivityResultCallback> callbackMap = new HashMap<>();
 
     // 启动流程的入口方法
-    public static void startForResult(Context context, Intent targetIntent, ActivityResultListener callback) {
-
+    public static void startForResult(Context context, Intent targetIntent, ActivityResultCallback callback) {
+        init(context.getApplicationInfo());
         ComponentName componentName = targetIntent.resolveActivity(context.getPackageManager());
         if (componentName == null) {
             //找不到对应的activity
@@ -30,13 +51,19 @@ public class ActivityResultHelper {
         }
         if (componentName.getPackageName().equals(context.getPackageName())) {
             // 启动的activity是本app的
-            LogUtils.d("启动的activity是本app的",componentName.getClassName());
+            if(debugable){
+                Log.d("ActivityResultx","启动的activity是本app的,"+componentName.getClassName());
+            }
         }else {
-            LogUtils.d("启动的activity是第三方的",componentName.getPackageName(),componentName.getClassName());
+            if(debugable){
+                Log.d("ActivityResultx","启动的activity是第三方的,"+componentName.getPackageName()+","+componentName.getClassName());
+            }
         }
         callbackMap.put(targetIntent.hashCode(),callback);
         // 启动透明Activity
-        LogUtils.d("intent hash0",targetIntent.hashCode());
+        if(debugable){
+            Log.v("ActivityResultx","intent hash0,"+targetIntent.hashCode());
+        }
         Intent intent = new Intent(context, TransparentActivity.class);
         intent.putExtra("target_intent", targetIntent);
         intent.putExtra("target_intent_hash", targetIntent.hashCode());
@@ -47,17 +74,21 @@ public class ActivityResultHelper {
 
     // 供TransparentActivity调用的回调方法
     static void onActivityResult(int resultCode, Intent data,int intentHashCode) {
-        LogUtils.d("intent hash1",intentHashCode);
-        ActivityResultListener remove = callbackMap.remove(intentHashCode);
+        if(debugable){
+            Log.v("ActivityResultx","intent hash1,"+intentHashCode);
+        }
+        ActivityResultCallback remove = callbackMap.remove(intentHashCode);
 
         if (remove == null){
-            LogUtils.w("ActivityResultListener callback is null",intentHashCode);
+            if(debugable){
+                Log.w("ActivityResultx","ActivityResultListener callback is null,"+intentHashCode);
+            }
             return;
         }
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                remove.onActivityResult(0,resultCode,data);
+                remove.onActivityResult(resultCode,data);
             }
         },1000);
 

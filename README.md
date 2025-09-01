@@ -4,6 +4,78 @@ use a transparent fragment to handle callbacks of activity in listener style api
 
 ![image-20201112195140088](https://gitee.com/hss012489/picbed/raw/master/picgo/1605181900175-image-20201112195140088.jpg)
 
+
+
+# 202509 新api
+
+* 基于ActivityResultLauncher+透明activity
+* 静态方法,统一回调,任何地方都可以调用,无需在oncreate里
+* 回调时机为透明activity destory后,回调里再获取top activity 为真实可用的activity.
+
+
+
+```groovy
+implementation 'com.github.hss01248.StartActivityResult:activityresult2:2.0.0'
+```
+
+
+
+##  api
+
+​	//有真实result的:
+
+```java
+// 准备目标Intent
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_PICK);
+
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
+            @Override
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
+                LogUtils.w(resultCode,data);
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+
+            }
+        });
+```
+
+
+
+
+
+
+
+//没有真实result的:
+
+```java
+			Intent intent = new Intent();
+        // 设置动作：打开应用详情页面
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        // 设置要打开的应用的包名（这里使用当前应用的包名）
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
+            @Override
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
+                LogUtils.w(resultCode,data);
+              //resultCode统一为cancel,权限开关等场景自行判断权限有无
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+
+            }
+        });
+```
+
+
+
+# 下面为老的api:
+
 # gradle
 
 Add the JitPack repository in your build.gradle (top level module):
