@@ -39,25 +39,25 @@ public class StartActivityResultHelper {
         }
     }
     // 静态回调引用
-    private static HashMap<Integer, ActivityResultCallback> callbackMap = new HashMap<>();
+    private  static HashMap<Integer, ActivityResultCallback> callbackMap = new HashMap<>();
 
     // 启动流程的入口方法
 
     /**
      * Consider adding a <queries> declaration to your manifest when calling this method; see https://g.co/dev/packagevisibility for details
-     * @param activity
+     * @param context
      * @param targetIntent
      * @param callback
      */
-    public static void startForResult(Activity activity, Intent targetIntent, ActivityResultCallback callback) {
-        init(activity.getApplicationInfo());
-        ComponentName componentName = targetIntent.resolveActivity(activity.getPackageManager());
+    public static void startForResult(Context context, Intent targetIntent, ActivityResultCallback callback) {
+        init(context.getApplicationInfo());
+        ComponentName componentName = targetIntent.resolveActivity(context.getPackageManager());
         if (componentName == null) {
             //找不到对应的activity
             callback.onActivityNotFound(new Throwable("Activity not found"));
             return;
         }
-        if (componentName.getPackageName().equals(activity.getPackageName())) {
+        if (componentName.getPackageName().equals(context.getPackageName())) {
             // 启动的activity是本app的
             if(debugable){
                 Log.d("ActivityResultx","启动的activity是本app的,"+componentName.getClassName());
@@ -72,20 +72,41 @@ public class StartActivityResultHelper {
         if(debugable){
             Log.v("ActivityResultx","intent hash0,"+targetIntent.hashCode());
         }
+        if(Looper.myLooper() == Looper.getMainLooper()){
+            startActi(context, targetIntent);
+        }else {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    startActi(context, targetIntent);
+                }
+            });
+        }
+    }
+
+    private static void startActi(Context context, Intent targetIntent) {
         try{
-            Intent intent = new Intent(activity, TransparentActivity.class);
+            Intent intent = new Intent(context, TransparentActivity.class);
             intent.putExtra("target_intent", targetIntent);
             intent.putExtra("target_intent_hash", targetIntent.hashCode());
-            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.startActivity(intent);
+            context.startActivity(intent);
         }catch (Throwable throwable){
             throwable.printStackTrace();
-            ActivityResultCallback remove = callbackMap.remove(targetIntent.hashCode());
-            if(remove != null){
-                remove.onActivityNotFound(throwable);
-            }else {
-                if(debugable){
-                    Log.w("ActivityResultx","ActivityResultListener callback is null,"+targetIntent.hashCode());
+            try{
+                Intent intent = new Intent(context, TransparentActivity.class);
+                intent.putExtra("target_intent", targetIntent);
+                intent.putExtra("target_intent_hash", targetIntent.hashCode());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }catch (Throwable throwable2){
+                throwable2.printStackTrace();
+                ActivityResultCallback remove = callbackMap.remove(targetIntent.hashCode());
+                if(remove != null){
+                    remove.onActivityNotFound(throwable2);
+                }else {
+                    if(debugable){
+                        Log.w("ActivityResultx","ActivityResultListener callback is null,"+ targetIntent.hashCode());
+                    }
                 }
             }
         }
