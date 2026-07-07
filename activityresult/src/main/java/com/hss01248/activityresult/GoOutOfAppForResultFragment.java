@@ -70,7 +70,9 @@ import java.util.Random;
             }
 
         }catch (Throwable throwable){
-            listener.onActivityNotFound(throwable);
+            if(listener !=null){
+                listener.onActivityNotFound(throwable);
+            }
             BaseTransFragment.finish(this);
         }
     }
@@ -104,7 +106,7 @@ import java.util.Random;
         lastPause = System.currentTimeMillis();
         //对于打开通知权限这种,没有回调的,就会在onpause后立刻回调onActivityResult
         //如何处理? --> 在onStop后开始响应onActivityResult
-        if(listener.configUIAsDialog()){
+        if(listener !=null && listener.configUIAsDialog()){
             startWaitingResult = true;
         }
 
@@ -160,7 +162,7 @@ import java.util.Random;
             }
             return;
         }*/
-        if(listener.configHaveRealImmediatelyCallback()){
+        if(listener !=null && listener.configHaveRealImmediatelyCallback()){
             consumed = true;
             if (StartActivityUtil.debugable) {
                 Log.i("onActivityResult", "frag req:" + requestCode + ",result:" + resultCode + ",data:" + data);
