@@ -9,15 +9,14 @@ import androidx.core.app.NotificationManagerCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -396,5 +395,139 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    /** 观察 TransparentActivity 进出是否还有全局转场动画 */
+    public void testAr2AnimInner(View view) {
+        Intent intent = new Intent(this, ActivityDemo2.class);
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
+            @Override
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
+                String summary = summarizeResultIntent(resultCode, data);
+                LogUtils.w("testAr2AnimInner", summary);
+                Toast.makeText(MainActivity.this, summary, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+                Toast.makeText(MainActivity.this, "Activity not found: " + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /** ResultEcho 回传含 ClipData/Extras/action/data 的完整 Intent，验证 forkIntent */
+    public void testAr2ForkFull(View view) {
+        Intent intent = new Intent(this, ResultEchoActivity.class);
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
+            @Override
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
+                String summary = summarizeResultIntent(resultCode, data);
+                LogUtils.w("testAr2ForkFull", summary, data);
+                Toast.makeText(MainActivity.this, summary, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+                Toast.makeText(MainActivity.this, "Activity not found: " + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /** 取消且 data=null，验证 forkIntent 不会把 null 变成空 Intent */
+    public void testAr2ForkCancelNull(View view) {
+        Intent intent = new Intent(this, ResultEchoActivity.class);
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
+            @Override
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
+                boolean nullOk = data == null;
+                String summary = "resultCode=" + resultCode
+                        + ", dataIsNull=" + nullOk
+                        + (nullOk ? " (PASS)" : " (FAIL: 期望 null)");
+                LogUtils.w("testAr2ForkCancelNull", summary);
+                Toast.makeText(MainActivity.this, summary, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+                Toast.makeText(MainActivity.this, "Activity not found: " + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /** 系统多图选择，验证 forkIntent 保留 ClipData */
+    public void testAr2MultiImageClipData(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
+            @Override
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
+                String summary = summarizeResultIntent(resultCode, data);
+                LogUtils.w("testAr2MultiImageClipData", summary, data);
+                Toast.makeText(MainActivity.this, summary, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+                Toast.makeText(MainActivity.this, "Activity not found: " + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /** 无 result data 的系统页，观察透明页进出动画 */
+    public void testAr2AnimSettings(View view) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.fromParts("package", getPackageName(), null));
+        StartActivityResultHelper.startForResult(this, intent, new ActivityResultCallback() {
+            @Override
+            public void onActivityResult(int resultCode, @Nullable Intent data) {
+                String summary = summarizeResultIntent(resultCode, data);
+                LogUtils.w("testAr2AnimSettings", summary);
+                Toast.makeText(MainActivity.this, summary, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onActivityNotFound(Throwable e) {
+                Toast.makeText(MainActivity.this, "Activity not found: " + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private static String summarizeResultIntent(int resultCode, @Nullable Intent data) {
+        if (data == null) {
+            return "resultCode=" + resultCode + ", data=null";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("resultCode=").append(resultCode);
+        sb.append("\naction=").append(data.getAction());
+        sb.append("\ndata=").append(data.getDataString());
+        sb.append("\ntype=").append(data.getType());
+        sb.append("\npackage=").append(data.getPackage());
+        sb.append("\nflags=0x").append(Integer.toHexString(data.getFlags()));
+        sb.append("\ncategories=").append(data.getCategories());
+        Bundle extras = data.getExtras();
+        sb.append("\nextrasKeys=").append(extras == null ? null : extras.keySet());
+        if (extras != null && extras.containsKey("echo_name")) {
+            sb.append("\necho_name=").append(extras.getString("echo_name"));
+            sb.append(", echo_score=").append(extras.getInt("echo_score"));
+        }
+        if (extras != null && extras.containsKey("名字")) {
+            sb.append("\n名字=").append(extras.getString("名字"));
+        }
+        ClipData clipData = data.getClipData();
+        if (clipData == null) {
+            sb.append("\nclipData=null");
+        } else {
+            sb.append("\nclipCount=").append(clipData.getItemCount());
+            for (int i = 0; i < clipData.getItemCount(); i++) {
+                ClipData.Item item = clipData.getItemAt(i);
+                sb.append("\n  [").append(i).append("] uri=")
+                        .append(item.getUri())
+                        .append(", text=")
+                        .append(item.getText());
+            }
+        }
+        return sb.toString();
     }
 }

@@ -18,7 +18,8 @@ public class TransparentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        overridePendingTransition(0, 0);
+
         // 注册ActivityResultLauncher
         launcher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -53,5 +54,11 @@ public class TransparentActivity extends AppCompatActivity {
             StartActivityResultHelper.onActivityResult(Activity.RESULT_CANCELED, null,intentHashCode);
             finish();
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
     }
 }

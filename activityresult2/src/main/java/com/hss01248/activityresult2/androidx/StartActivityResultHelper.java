@@ -1,21 +1,19 @@
 package com.hss01248.activityresult2.androidx;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcel;
 import android.util.Log;
 
 
 import com.hss01248.activityresult2.ActivityResultCallback;
 
 import java.util.HashMap;
-import java.util.Set;
 
 public class StartActivityResultHelper {
 
@@ -90,6 +88,7 @@ public class StartActivityResultHelper {
             intent.putExtra("target_intent", targetIntent);
             intent.putExtra("target_intent_hash", targetIntent.hashCode());
             context.startActivity(intent);
+            clearPendingTransition(context);
         }catch (Throwable throwable){
             throwable.printStackTrace();
             try{
@@ -98,6 +97,7 @@ public class StartActivityResultHelper {
                 intent.putExtra("target_intent_hash", targetIntent.hashCode());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+                clearPendingTransition(context);
             }catch (Throwable throwable2){
                 throwable2.printStackTrace();
                 ActivityResultCallback remove = callbackMap.remove(targetIntent.hashCode());
@@ -109,6 +109,12 @@ public class StartActivityResultHelper {
                     }
                 }
             }
+        }
+    }
+
+    private static void clearPendingTransition(Context context) {
+        if (context instanceof Activity) {
+            ((Activity) context).overridePendingTransition(0, 0);
         }
     }
 
@@ -134,45 +140,21 @@ public class StartActivityResultHelper {
         },1000);
     }
     /**
-     * 创建一个与原Intent数据相同但完全独立的新Intent
+     * 创建一个与原Intent数据相同但完全独立的新Intent（Parcel 深拷贝，含 ClipData 等全部字段）
      * @param originalIntent 原始Intent
-     * @return 复制后的新Intent
+     * @return 复制后的新Intent；原为 null 时返回 null
      */
     public static Intent forkIntent(Intent originalIntent) {
         if (originalIntent == null) {
-            return new Intent();
+            return null;
         }
-
-        // 创建新的Intent
-        Intent newIntent = new Intent();
-
-        // 复制动作
-        newIntent.setAction(originalIntent.getAction());
-
-        // 复制数据和类型
-        newIntent.setDataAndType(originalIntent.getData(), originalIntent.getType());
-
-        // 复制类别
-        Set<String> categories = originalIntent.getCategories();
-        if (categories != null) {
-            for (String category : categories) {
-                newIntent.addCategory(category);
-            }
+        Parcel parcel = Parcel.obtain();
+        try {
+            originalIntent.writeToParcel(parcel, 0);
+            parcel.setDataPosition(0);
+            return Intent.CREATOR.createFromParcel(parcel);
+        } finally {
+            parcel.recycle();
         }
-
-        // 复制Extras数据
-        Bundle extras = originalIntent.getExtras();
-        if (extras != null) {
-            // 使用clone()确保数据完全独立
-            newIntent.putExtras((Bundle) extras.clone());
-        }
-
-        // 复制flags
-        newIntent.setFlags(originalIntent.getFlags());
-
-        // 复制组件信息（可选，根据需要决定是否保留）
-        newIntent.setComponent(originalIntent.getComponent());
-
-        return newIntent;
     }
 }

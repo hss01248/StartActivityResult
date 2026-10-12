@@ -1,98 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:paddingBottom="30dp"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".MainActivity">
-<!--fragment实现-->
-    <TextView
-        android:layout_width="match_parent"
-        android:text="activityResultLauncher:"
-        android:padding="20dp"
-        android:onClick="activityResultLauncher"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:text="activityResultLauncher:无result"
-        android:padding="20dp"
-        android:onClick="activityResultLauncherNoResult"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:text="fragment实现:"
-        android:padding="20dp"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/btn_lifecycle"
-        android:text="跳内部activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/btn_pick_photo"
-        android:text="跳到系统选图界面-有回调"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:text="跳到系统选音频界面-兼容性问题处理"
-        android:onClick="pickAudio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:text="跳到系统选视频频界面-兼容性问题处理"
-        android:onClick="pickVideo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/btn_notification"
-        android:text="跳到系统通知权限界面-无回调"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="halfDialog"
-        android:text="选图-删除弹窗"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="androidx api实现:"
-        android:padding="20dp"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="inner2"
-        android:text="跳内部activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="notification2"
-        android:text="跳到系统通知权限界面"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
+        <!--fragment实现-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="activityResultLauncher"
+            android:padding="20dp"
+            android:text="activityResultLauncher:" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="activityResultLauncherNoResult"
+            android:padding="20dp"
+            android:text="activityResultLauncher:无result" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="fragment实现:" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:text="透明activity当做dialog:"
-        android:padding="20dp"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="activityAsDialog"
-        android:text="activityAsDialog"
-        android:textAllCaps="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_lifecycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="跳内部activity" />
 
-    <Button
-        android:onClick="dialogAsToast"
-        android:text="dialogAsToast"
-        android:textAllCaps="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_pick_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="跳到系统选图界面-有回调" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="pickAudio"
+            android:text="跳到系统选音频界面-兼容性问题处理" />
 
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="pickVideo"
+            android:text="跳到系统选视频频界面-兼容性问题处理" />
+
+        <Button
+            android:id="@+id/btn_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="跳到系统通知权限界面-无回调" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="halfDialog"
+            android:text="选图-删除弹窗" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="androidx api实现:" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="inner2"
+            android:text="跳内部activity" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="notification2"
+            android:text="跳到系统通知权限界面" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="activityresult2 回归测试:"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="testAr2AnimInner"
+            android:text="测动画: 内部页往返"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="testAr2ForkFull"
+            android:text="测forkIntent: 完整字段回传"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="testAr2ForkCancelNull"
+            android:text="测forkIntent: 取消 data=null"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="testAr2MultiImageClipData"
+            android:text="测forkIntent: 多图 ClipData"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="testAr2AnimSettings"
+            android:text="测动画: 应用详情无result"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="透明activity当做dialog:" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="activityAsDialog"
+            android:text="activityAsDialog"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="dialogAsToast"
+            android:text="dialogAsToast"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+</ScrollView>
